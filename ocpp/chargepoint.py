@@ -1,11 +1,26 @@
-import websockets
+from dataclasses import asdict
 import asyncio
-import time
+import inspect
 import uuid
 import logging
 
 from messagetypes import Call, MessageType, unpack
-from exceptions import OCPPError
+from validator import get_validator
+from routing import create_route_map
+from jsonschema import _validators as SchemaValidators
+from jsonschema.exceptions import ValidationError as SchemaValidationError
+
+from exceptions import (
+    FormatViolationError,
+    NotImplementedError,
+    OCPPError,
+    PropertyConstraintViolationError,
+    ProtocolError,
+    TypeConstraintViolationError,
+    UnknownCallErrorCodeError,
+    ValidationError,
+    NotSupportedError,
+)
 
 LOGGER = logging.getLogger("ocpp")
 
@@ -23,6 +38,8 @@ class ChargePoint():
         # A queue used to pass CallResults and CallErrors.
         self._response_queue = asyncio.Queue()
 
+        self.route_map = create_route_map(self)
+
         # Function used to generate unique ids for CALLs. By default
         # uuid.uuid4() is used, but it can be changed. This is meant primarily
         # for testing purposes to have predictable unique ids.
@@ -39,6 +56,7 @@ class ChargePoint():
 
         try:
             msg = unpack(raw_msg)
+            print("msg:    ",msg)
         except OCPPError as e:
             LOGGER.exception(
                 "Unable to parse message: '%s', it doesn't seem "
@@ -62,7 +80,42 @@ class ChargePoint():
     async def _handle_call(self,msg):
         #msg has unique_id, action, payload
         print("handle message",msg,msg.payload,msg.action)
+        validator = get_validator(msg.message_type_id,msg.action,"2.0.1")
+        try:
+            print(self.route_map[msg.action]["_skip_schema_validation"])
+            handlers = self.route_map[msg.action]
+            if handlers["_skip_schema_validation"] is True:
+                validator.validate(msg.payload)
+        except SchemaValidationError as e:
+            print(e)
+        try:
+            handler = handlers["_on_action"]
+        except KeyError:
+            raise NotSupportedError(
+                details={"cause": f"No handler for {msg.action} registered."}
+            )
+        try:
+            response = handler()
+            print(response)
+            if inspect.isawaitable(response):
+                response = await response
+        except Exception as e:
+            LOGGER.exception("Error while handling request '%s'", msg)
+            response = msg.create_call_error(e).to_json()
+            await self._send(response)
+            return
 
+        payload_to_send = asdict(response)
+        print("payload_to_send:   ",payload_to_send)
+        message = msg.create_call_result(payload_to_send)
+        responseValidator = get_validator(MessageType.CallResult,msg.action,"2.0.1")
+        print("message:   ",message)
+        if handlers["_skip_schema_validation"] is True:
+            responseValidator.validate(message.payload)
+        await self._send(message.to_json())
+
+    def call(self):
+        pass
     async def _send(self, message):
         LOGGER.info("%s: send %s", self.id, message)
         await self._connection.send(message)
