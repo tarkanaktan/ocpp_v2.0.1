@@ -64,31 +64,6 @@ def unpack(msg):
     )
 
 class Call:
-    """A Call is a type of message that initiate a request/response sequence.
-    Both central systems and charge points can send this message.
-
-    From the specification:
-
-        A Call always consists of 4 elements: The standard elements
-        MessageTypeId and UniqueId, a specific Action that is required on the
-        other side and a payload, the arguments to the Action. The syntax of a
-        call looks like this:
-
-            [<MessageTypeId>, "<UniqueId>", "<Action>", {<Payload>}]
-
-        ...
-
-        For example, a BootNotification request could look like this:
-
-            [2,
-             "19223201",
-             "BootNotification",
-             {
-              "chargePointVendor": "VendorX",
-              "chargePointModel": "SingleSocketCharger"
-             }
-            ]
-    """
 
     message_type_id = 2
 
@@ -140,32 +115,6 @@ class Call:
         )
 
 class CallResult:
-    """
-    A CallResult is a message indicating that a Call has been handled
-    successfully.
-
-    From the specification:
-
-        A CallResult always consists of 3 elements: The standard elements
-        MessageTypeId, UniqueId and a payload, containing the response to the
-        Action in the original Call. The syntax of a call looks like this:
-
-            [<MessageTypeId>, "<UniqueId>", {<Payload>}]
-
-        ...
-
-        For example, a BootNotification response could look like this:
-
-            [3,
-             "19223201",
-             {
-              "status":"Accepted",
-              "currentTime":"2013-02-01T20:53:32.486Z",
-              "heartbeatInterval":300
-             }
-            ]
-
-    """
 
     message_type_id = 3
 
@@ -197,19 +146,6 @@ class CallResult:
         )
 
 class CallError:
-    """
-    A CallError is a response to a Call that indicates an error.
-
-    From the specification:
-
-        CallError always consists of 5 elements: The standard elements
-        MessageTypeId and UniqueId, an errorCode string, an errorDescription
-        string and an errorDetails object.
-
-        The syntax of a call looks like this:
-
-            [<MessageTypeId>, "<UniqueId>", "<errorCode>", "<errorDescription>", {<errorDetails>}] # noqa
-    """
 
     message_type_id = 4
 

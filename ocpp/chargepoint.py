@@ -3,26 +3,25 @@ import asyncio
 import inspect
 import uuid
 import logging
+import time
 
+from ocppmessages import incomingmessages, outgoingmessages
 from messagetypes import Call, MessageType, unpack
-from validator import get_validator
+from validator import validatePayload
 from routing import create_route_map
-from jsonschema import _validators as SchemaValidators
 from jsonschema.exceptions import ValidationError as SchemaValidationError
 
 from exceptions import (
-    FormatViolationError,
-    NotImplementedError,
     OCPPError,
-    PropertyConstraintViolationError,
-    ProtocolError,
-    TypeConstraintViolationError,
-    UnknownCallErrorCodeError,
-    ValidationError,
     NotSupportedError,
 )
 
-LOGGER = logging.getLogger("ocpp")
+logging.basicConfig(filename="newfile.log",
+                    format='%(asctime)s %(message)s',
+                    filemode='a')
+
+LOGGER = logging.getLogger()
+LOGGER.setLevel(logging.DEBUG)
 
 class ChargePoint():
 
@@ -44,11 +43,14 @@ class ChargePoint():
         # uuid.uuid4() is used, but it can be changed. This is meant primarily
         # for testing purposes to have predictable unique ids.
         self._unique_id_generator = uuid.uuid4
+
+        self._call_result = incomingmessages
+        self._call = outgoingmessages
     
     async def start(self):
         while True:
             message = await self._connection.recv()
-            print("%s: receive message %s", self.id, message)
+            print("{}: receive message {}".format(self.id, message))
 
             await self.route_message(message)
 
@@ -56,7 +58,6 @@ class ChargePoint():
 
         try:
             msg = unpack(raw_msg)
-            print("msg:    ",msg)
         except OCPPError as e:
             LOGGER.exception(
                 "Unable to parse message: '%s', it doesn't seem "
@@ -79,13 +80,11 @@ class ChargePoint():
 
     async def _handle_call(self,msg):
         #msg has unique_id, action, payload
-        print("handle message",msg,msg.payload,msg.action)
-        validator = get_validator(msg.message_type_id,msg.action,"2.0.1")
         try:
             print(self.route_map[msg.action]["_skip_schema_validation"])
             handlers = self.route_map[msg.action]
             if handlers["_skip_schema_validation"] is True:
-                validator.validate(msg.payload)
+                validatePayload(msg)
         except SchemaValidationError as e:
             print(e)
         try:
@@ -96,7 +95,6 @@ class ChargePoint():
             )
         try:
             response = handler()
-            print(response)
             if inspect.isawaitable(response):
                 response = await response
         except Exception as e:
@@ -106,16 +104,79 @@ class ChargePoint():
             return
 
         payload_to_send = asdict(response)
-        print("payload_to_send:   ",payload_to_send)
         message = msg.create_call_result(payload_to_send)
-        responseValidator = get_validator(MessageType.CallResult,msg.action,"2.0.1")
-        print("message:   ",message)
         if handlers["_skip_schema_validation"] is True:
-            responseValidator.validate(message.payload)
+            validatePayload(message)
         await self._send(message.to_json())
 
-    def call(self):
-        pass
+        try:
+            handler = handlers["_after_action"]
+        except KeyError:
+            raise NotSupportedError(
+                details={"cause": f"No handler for {msg.action} registered."}
+            )
+        try:
+            response = handler()
+            if inspect.isawaitable(response):
+                response = await response
+        except Exception as e:
+            LOGGER.exception("Error while handling request '%s'", msg)
+
+    async def call(self,payload):
+        msg_payload = asdict(payload)
+        action_name = ""
+        print(payload.__class__.__name__)
+        if "Request" in payload.__class__.__name__:
+            action_name = payload.__class__.__name__[:-14]
+        elif "Response" in payload.__class__.__name__:
+            action_name = payload.__class__.__name__[:-15]
+        call = Call(
+            unique_id=str(self._unique_id_generator()),
+            action=action_name,
+            payload=msg_payload,
+        )
+        await self._send(call.to_json())
+        print("{}: send message {} ".format(self.id, call.to_json()))
+        try:
+            response = await self._get_response(call.unique_id,self.response_timeout)
+        except:
+            LOGGER.error("No response")
+
+        response.action = call.action
+        validatePayload(response)
+        #cls = getattr(self._call_result, action_name + "ResponsePayload")
+        #return cls(**response.payload)
+        return self._get_attiribute_list(action_name,response)
+
+    def _get_attiribute_list(self, action_name, response):
+        cls = getattr(self._call_result, action_name + "ResponsePayload")
+        attribute =  cls(**response.payload)
+        print(response.payload.keys())
+        for att in response.payload.keys():
+            if(isinstance(att, dict)):
+                print(att)
+        return attribute
+
     async def _send(self, message):
         LOGGER.info("%s: send %s", self.id, message)
+        print("send",self.id, message)
         await self._connection.send(message)
+
+    async def _get_response(self,unique_id,timeout):
+        wait_until = time.time() + timeout
+        try:
+            # Wait for response of the Call message.
+            response = await asyncio.wait_for(self._response_queue.get(), timeout)
+        except asyncio.TimeoutError:
+            LOGGER.error("Timeout")
+
+        if response.unique_id == unique_id:
+            return response
+
+        LOGGER.error("Ignoring response with unknown unique id: %s", response)
+        timeout_left = wait_until - time.time()
+
+        if timeout_left < 0:
+            raise asyncio.TimeoutError
+
+        return await self._get_specific_response(unique_id, timeout_left)
