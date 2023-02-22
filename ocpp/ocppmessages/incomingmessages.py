@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
-from .messagedictionary import *
+from ocpp.ocppmessages.messagedictionary import *
 
 @dataclass
 class BootNotificationResponsePayload:
@@ -11,7 +11,7 @@ class BootNotificationResponsePayload:
     statusInfo: StatusInfo = field(default = None)
 
 @dataclass 
-class HeartBeatResponsePayload:
+class HeartbeatResponsePayload:
     currentTime: str
     customData: CustomData = field(default = None)
 

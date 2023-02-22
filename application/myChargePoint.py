@@ -5,7 +5,7 @@ from ocpp.chargepoint import ChargePoint, LOGGER
 from ocpp.routing import onresponse,on,after
 import ocpp.ocppmessages.incomingmessages as incomingmessages
 import ocpp.ocppmessages.outgoingmessages as outgoingmessages
-import ocpp.ocppmessages.messagedictionaries as messagedictionaries
+import ocpp.ocppmessages.messagedictionary as messagedictionary
 
 from application.enumtypes import *
 
@@ -49,7 +49,7 @@ class MyChargePoint(ChargePoint):
 
     async def send_boot_notification(self):
         request = outgoingmessages.BootNotificationRequestPayload(
-            chargingStation=messagedictionaries.ChargingStationDict(model="Wallbox XYZ",vendorName="anewone"),
+            chargingStation=messagedictionary.ChargingStation(model="Wallbox XYZ",vendorName="anewone"),
             reason="PowerUp",
         )
         try:

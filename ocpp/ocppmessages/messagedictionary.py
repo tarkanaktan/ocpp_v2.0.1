@@ -1,5 +1,6 @@
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from dataclasses import dataclass
+from typing import List
+
 
 @dataclass
 class CustomData:
@@ -8,46 +9,46 @@ class CustomData:
 @dataclass
 class Variable:
     name: str
-    customData: CustomData = field(default = None)   
-    instance: str = field(default = None)
+    customData: CustomData = None 
+    instance: str = None
 
 @dataclass
 class Evse:
     id: int
-    customData: CustomData = field(default = None)
-    connectorId: int = field(default = None)
+    customData: CustomData = None
+    connectorId: int = None
 
 @dataclass
 class Component:
     name: str
-    customData: CustomData = field(default = None)
-    evse: Evse = field(default = None)
-    instance: str = field(default = None)
+    customData: CustomData = None
+    evse: Evse = None
+    instance: str = None
 
 @dataclass
 class Display:
     name: str
-    customData: CustomData = field(default = None)
-    evse: Evse = field(default = None)
-    instance: str = field(default = None)
+    customData: CustomData = None
+    evse: Evse = None
+    instance: str = None
 
 @dataclass
 class Apn:    
     apnAuthentication: str
     apn: str
-    apnUserName: str = field(default = None)
-    apnPassword: str = field(default = None)
-    simPin: int = field(default = None)
-    preferredNetwork: str = field(default = None)
-    useOnlyPreferredNetwork: bool = field(default = None)
-    customData: CustomData = field(default = None)
+    apnUserName: str = None
+    apnPassword: str = None
+    simPin: int = None
+    preferredNetwork: str = None
+    useOnlyPreferredNetwork: bool = None
+    customData: CustomData = None
 
 @dataclass
 class MessageContentType:
     content: str
     format: str
-    language: str = field(default = None)
-    customData: CustomData = field(default = None)
+    language: str = None
+    customData: CustomData = None
  
 @dataclass   
 class Vpn:
@@ -56,20 +57,20 @@ class Vpn:
     password: str
     key: str
     type: str
-    customData: CustomData = field(default = None)
-    group: str = field(default = None)
+    customData: CustomData = None
+    group: str = None
 
 @dataclass
 class Modem:
-    customData: CustomData = field(default = None)
-    iccid: str = field(default = None)
-    imsi: str = field(default = None)
+    customData: CustomData = None
+    iccid: str = None
+    imsi: str = None
 
 @dataclass
 class StatusInfo:
     reasonCode: str
-    additionalInfo: str = field(default = None)
-    customData: CustomData = field(default = None)
+    additionalInfo: str = None
+    customData: CustomData = None
 
 @dataclass
 class SignedMeterValue:
@@ -77,114 +78,111 @@ class SignedMeterValue:
     signingMethod: str
     encodingMethod: str
     publicKey: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class UnitOfMeasure:
-    customData: CustomData = field(default = None)
-    unit: str = field(default = None)
-    multiplier: int = field(default = None)
+    customData: CustomData = None
+    unit: str = None
+    multiplier: int = None
 
 @dataclass
 class SampledValue:
     value: int
-    context: str = field(default = None)
-    measurand: str = field(default = None)
-    phase: str = field(default = None)
-    location: str = field(default = None)
-    signedMeterValue: SignedMeterValue = field(default = None)
-    unitOfMeasure: UnitOfMeasure  = field(default = None)
-    customData: CustomData = field(default = None)
+    context: str = None
+    measurand: str = None
+    phase: str = None
+    location: str = None
+    signedMeterValue: SignedMeterValue = None
+    unitOfMeasure: UnitOfMeasure  = None
+    customData: CustomData = None
 
 @dataclass
-class AACChargingParameters:
+class ACChargingParameters:
     energyAmount: int
     evMinCurrent: int
     evMaxCurrent: int
     evMaxVoltage: int
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class DCChargingParameters:
     evMaxCurrent: int
     evMaxVoltage: int
-    energyAmount: int = field(default = None)
-    evMaxPower: int = field(default = None)
-    stateOfCharge: int = field(default = None)
-    evEnergyCapacity: int = field(default = None)
-    fullSoC: int = field(default = None)
-    bulkSoC: int = field(default = None)
-    CustomData: CustomData = field(default = None)
+    energyAmount: int = None
+    evMaxPower: int = None
+    stateOfCharge: int = None
+    evEnergyCapacity: int = None
+    fullSoC: int = None
+    bulkSoC: int = None
+    CustomData: CustomData = None
 
 @dataclass
 class Cost:
     costKind: str
     amount: int
-    amountMultiplier: int = field(default = None)
-    CustomData: CustomData = field(default = None)
+    amountMultiplier: int = None
+    CustomData: CustomData = None
 
 @dataclass
 class ConsumptionCost:
     startValue: int
     cost: List[Cost]
-    CustomData: CustomData = field(default = None)
+    CustomData: CustomData = None
 
 @dataclass
 class RelativeTimeInterval:
     start: int
-    duration: int = field(default = None)
-    CustomData: CustomData = field(default = None)
+    duration: int = None
+    CustomData: CustomData = None
 
 @dataclass
 class SalesTariffEntry:
     relativeTimeInterval: RelativeTimeInterval
-    ePriceLevel: int = field(default = None)
-    consumptionCost: List[ConsumptionCost] = field(default = None)
-    CustomData: CustomData = field(default = None)
+    ePriceLevel: int = None
+    consumptionCost: List[ConsumptionCost] = None
+    CustomData: CustomData = None
 
 @dataclass
 class SalesTariff:
     id: int
     salesTariffEntry: List[SalesTariffEntry]
-    salesTariffDescription: str = field(default = None)
-    numEPriceLevels: int = field(default = None)
-    CustomData: CustomData = field(default = None)
+    salesTariffDescription: str = None
+    numEPriceLevels: int = None
+    CustomData: CustomData = None
 
 @dataclass
 class ChargingSchedulePeriod:
     startPeriod: int
     limit: int
-    numberPhases: int = field(default = None)
-    phaseToUse: int = field(default = None)
-    CustomData: CustomData = field(default = None)
+    numberPhases: int = None
+    phaseToUse: int = None
+    CustomData: CustomData = None
 
 @dataclass
 class AdditionalInfoType:
     additionalIdToken: str
     type: str
-    CustomData: CustomData = field(default = None)
-
-
-
+    CustomData: CustomData = None
 
 @dataclass
 class IdToken:
     idToken: str
     type: str
-    customData: CustomData = field(default = None)
-    additionalInfo: List[AdditionalInfoType] = field(default = None)
+    customData: CustomData = None
+    additionalInfo: List[AdditionalInfoType] = None
 
 @dataclass
 class IdTokenInfo:
     status: str
-    customData: CustomData = field(default = None)
-    cacheExpiryDateTime: str = field(default = None)
-    chargingPriority: int = field(default = None)
-    language1: str = field(default = None)
-    language2: str = field(default = None)
-    evseID: List[int] = field(default = None)
-    groupIdToken: IdToken = field(default = None)
-    personalMessage: MessageContentType = field(default = None)
+    customData: CustomData = None
+    cacheExpiryDateTime: str = None
+    chargingPriority: int = None
+    language1: str = None
+    language2: str = None
+    evseID: List[int] = None
+    groupIdToken: IdToken = None
+    personalMessage: MessageContentType = None
 
 @dataclass
 class CertificateHashData:
@@ -192,41 +190,41 @@ class CertificateHashData:
     issuerNameHash: str
     issuerKeyHash: str
     serialNumber: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class ChargingProfileCriterion:
-    customData: CustomData = field(default = None)
-    chargingProfilePurpose: str = field(default = None)
-    stackLevel: int = field(default = None)
-    chargingProfileId: List[int] = field(default = None)
-    chargingLimitSource: List[str] = field(default = None)
+    customData: CustomData = None
+    chargingProfilePurpose: str = None
+    stackLevel: int = None
+    chargingProfileId: List[int] = None
+    chargingLimitSource: List[str] = None
 
 @dataclass
 class GetVariableData:
     component: Component
     variable: Variable
-    customData: CustomData = field(default = None)
-    attributeType: str = field(default = None)
+    customData: CustomData = None
+    attributeType: str = None
 
 @dataclass
 class Log:
     remoteLocation: str
-    customData: CustomData = field(default = None)
-    oldestTimestamp: str = field(default = None)
-    latestTimestamp: str = field(default = None)
+    customData: CustomData = None
+    oldestTimestamp: str = None
+    latestTimestamp: str = None
 
 @dataclass
 class Message:
     id: int
     priority: str
     message: MessageContentType    
-    customData: CustomData = field(default = None)
-    display: Display = field(default = None)
-    state: str = field(default = None)
-    startDateTime: str = field(default = None)
-    endDateTime: str = field(default = None)
-    transactionId: str = field(default = None)
+    customData: CustomData = None
+    display: Display = None
+    state: str = None
+    startDateTime: str = None
+    endDateTime: str = None
+    transactionId: str = None
 
 
 @dataclass
@@ -237,9 +235,9 @@ class ConnectionData:
     messageTimeout: int
     securityProfile: int
     ocppInterface: str
-    customData: CustomData = field(default = None)
-    apn: Apn = field(default = None)      
-    vpn: Vpn = field(default = None)
+    customData: CustomData = None
+    apn: Apn = None    
+    vpn: Vpn = None
 
 @dataclass
 class SetMonitoringData:
@@ -248,42 +246,42 @@ class SetMonitoringData:
     severity: int
     component: Component
     variable: Variable
-    customData: CustomData = field(default = None)
-    id: int = field(default = None)
-    transaction: bool = field(default = None) 
+    customData: CustomData = None
+    id: int = None
+    transaction: bool = None
 
 @dataclass
 class SetVariableData:    
     attributeValue: str
     component: Component
     variable: Variable
-    customData: CustomData = field(default = None) 
-    attributeType: str = field(default = None) 
+    customData: CustomData = None
+    attributeType: str = None
 
 @dataclass
 class Firmware:    
     location: str
     retrieveDateTime: str
-    installDateTime: str = field(default = None)
-    signingCertificate: str = field(default = None)
-    signature: str = field(default = None)
-    customData: CustomData = field(default = None)
+    installDateTime: str = None
+    signingCertificate: str = None
+    signature: str = None
+    customData: CustomData = None
 
 @dataclass
 class ChargingStation:
     model: str
     vendorName: str
-    serialNumber: str = field(default = None)
-    modem: Modem = field(default = None)
-    firmwareVersion: str = field(default = None)
-    customData: CustomData = field(default = None)
+    serialNumber: str = None
+    modem: Modem = None
+    firmwareVersion: str = None
+    customData: CustomData = None
 
 @dataclass
 class ClearMonitoringResult:
     status: str
     id: int
-    statusInfo: StatusInfo = field(default = None)
-    customData: CustomData = field(default = None)
+    statusInfo: StatusInfo = None
+    customData: CustomData = None
 
 @dataclass
 class OCSPRequestData:
@@ -292,48 +290,48 @@ class OCSPRequestData:
     issuerKeyHash: str
     serialNumber: str
     responderURL: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class GetVariableResult:
     attributeStatus: str
     component: Component
     variable: Variable
-    attributeValue: str = field(default = None)
-    attributeType: str = field(default = None)
-    attributeStatusInfo: StatusInfo = field(default = None)
-    customData: CustomData = field(default = None)
+    attributeValue: str = None
+    attributeType: str = None
+    attributeStatusInfo: StatusInfo = None
+    customData: CustomData = None
 
 @dataclass
 class MeterValue:
     timestamp: str
     sampledValue: List[SampledValue]
-    customData: CustomData = field(default = None) 
+    customData: CustomData = None
 
 @dataclass
 class ChargingLimit:
     chargingLimitSource: str
-    isGridCritical: bool = field(default = None)
-    customData: CustomData = field(default = None)
+    isGridCritical: bool = None
+    customData: CustomData = None
 
 @dataclass
 class ChargingNeeds:
     requestedEnergyTransfer: str
-    acChargingParameters: AACChargingParameters = field(default = None)
-    dcChargingParameters: DCChargingParameters = field(default = None)
-    departureTime: str = field(default = None)
-    customData: CustomData = field(default = None)
+    acChargingParameters: ACChargingParameters = None
+    dcChargingParameters: DCChargingParameters = None
+    departureTime: str = None
+    customData: CustomData = None
 
 @dataclass
 class ChargingSchedule:
     id: int
     chargingRateUnit: str
     chargingSchedulePeriod: List[ChargingSchedulePeriod]
-    startSchedule: str = field(default = None)
-    duration: int = field(default = None)
-    minChargingRate: int = field(default = None)
-    salesTariff: SalesTariff = field(default = None)
-    customData: CustomData = field(default = None)
+    startSchedule: str = None
+    duration: int = None
+    minChargingRate: int = None
+    salesTariff: SalesTariff = None
+    customData: CustomData = None
 
 @dataclass
 class EventData:
@@ -344,13 +342,13 @@ class EventData:
     eventNotificationType: str
     component: Component
     variable: Variable
-    variableMonitoringId: int = field(default = None)
-    transactionId: str = field(default = None)
-    cleared: bool = field(default = None)
-    techInfo: str = field(default = None)
-    techCode: str = field(default = None)
-    cause: int = field(default = None)
-    customData: CustomData = field(default = None)
+    variableMonitoringId: int = None
+    transactionId: str = None
+    cleared: bool = None
+    techInfo: str = None
+    techCode: str = None
+    cause: int = None
+    customData: CustomData = None
 
 @dataclass
 class ChargingProfileType:
@@ -359,11 +357,11 @@ class ChargingProfileType:
     chargingProfilePurpose: str
     chargingProfileKind: str
     chargingSchedule: List[ChargingSchedule]
-    recurrencyKind: str = field(default = None)
-    validFrom: str = field(default = None)
-    validTo: str = field(default = None)
-    transactionId: str = field(default = None)
-    customData: CustomData = field(default = None)
+    recurrencyKind: str = None
+    validFrom: str = None
+    validTo: str = None
+    transactionId: str = None
+    customData: CustomData = None
 
 @dataclass
 class SetMonitoringResult:
@@ -372,27 +370,27 @@ class SetMonitoringResult:
     severity: int
     component: Component
     variable: Variable
-    id: int = field(default = None)
-    statusInfo: StatusInfo  = field(default = None)
-    customData: CustomData = field(default = None)
+    id: int = None
+    statusInfo: StatusInfo  = None
+    customData: CustomData = None
 
 @dataclass
 class SetVariableResult:
     attributeStatus: str
     component: Component
     variable: Variable
-    attributeType: str = field(default = None)
-    attributeStatusInfo: StatusInfo = field(default = None)
-    customData: CustomData = field(default = None)
+    attributeType: str = None
+    attributeStatusInfo: StatusInfo = None
+    customData: CustomData = None
 
 @dataclass
 class TransactionInfo:
     transactionId: str
-    chargingState: str = field(default = None)
-    timeSpentCharging: int = field(default = None)
-    stoppedReason: str = field(default = None)
-    remoteStartId: int = field(default = None) 
-    customData: CustomData = field(default = None)
+    chargingState: str = None
+    timeSpentCharging: int = None
+    stoppedReason: str = None
+    remoteStartId: int = None
+    customData: CustomData = None
 
 @dataclass
 class CompositeSchedule:
@@ -401,14 +399,14 @@ class CompositeSchedule:
     scheduleStart: str
     chargingRateUnit: str
     chargingSchedulePeriod: ChargingSchedulePeriod
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class CertificateHashDataChain:
     certificateType: str
     certificateHashData: CertificateHashData
-    customData: CustomData = field(default = None)
-    childCertificateHashData: List[CertificateHashData] = field(default = None)
+    customData: CustomData = None
+    childCertificateHashData: List[CertificateHashData] = None
 @dataclass
 class VariableMonitoring:
     id: int
@@ -416,148 +414,57 @@ class VariableMonitoring:
     value: int
     type: str
     severity: int
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class MonitoringData:
     component: Component
     variable: Variable
     variableMonitoring: List[VariableMonitoring]
-    CustomData: CustomData = field(default = None)
+    CustomData: CustomData = None
 
 @dataclass
 class VariableAttribute:
-    type: str = field(default = None)
-    value: str = field(default = None)
-    mutability: str = field(default = None)
-    persistent: bool = field(default = None)
-    constant: bool = field(default = None)
-    CustomData: CustomData = field(default = None)
+    type: str = None
+    value: str = None
+    mutability: str = None
+    persistent: bool = None
+    constant: bool = None
+    CustomData: CustomData = None
 
 @dataclass
 class VariableCharacteristics:
     dataType: str
     supportsMonitoring: bool
-    unit: str = field(default = None)
-    minLimit: int = field(default = None)
-    maxLimit: int = field(default = None)
-    valuesList: str = field(default = None)
-    CustomData: CustomData = field(default = None)
+    unit: str = None
+    minLimit: int = None
+    maxLimit: int = None
+    valuesList: str = None
+    CustomData: CustomData = None
 
 @dataclass
 class ReportData:
     component: Component
     variable: Variable
-    variableAttribute: List[VariableAttribute] = field(default = None)
-    variableCharacteristics: VariableCharacteristics = field(default = None)
-    CustomData: CustomData = field(default = None)
+    variableAttribute: List[VariableAttribute] = None
+    variableCharacteristics: VariableCharacteristics = None
+    CustomData: CustomData = None
 
 @dataclass
 class ClearChargingProfile:
-    CustomData: CustomData = field(default = None)
-    evseId: int = field(default = None)
-    chargingProfilePurpose: str = field(default = None)
-    stackLevel: int = field(default = None)
+    CustomData: CustomData = None
+    evseId: int = None
+    chargingProfilePurpose: str = None
+    stackLevel: int = None
 
 @dataclass
 class ComponentVariable:
     component: Component
-    variable: Variable = field(default = None)
-    CustomData: CustomData = field(default = None)
+    variable: Variable = None
+    CustomData: CustomData = None
 
 @dataclass
 class AuthorizationData:
     idToken: IdToken
-    idTokenInfo: IdTokenInfo = field(default = None)
-    CustomData: CustomData = field(default = None)
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    idTokenInfo: IdTokenInfo = None
+    CustomData: CustomData = None

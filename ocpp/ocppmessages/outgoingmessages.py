@@ -1,13 +1,13 @@
 from dataclasses import dataclass,field
 from typing import Dict, List, Optional
-from .messagedictionary import *
+from ocpp.ocppmessages.messagedictionary import *
 
 
 @dataclass
 class BootNotificationRequestPayload:
     chargingStation: ChargingStation
     reason: str
-    customData: CustomData = field(default = None) 
+    customData: CustomData = None
 
 @dataclass
 class HeartbeatRequestPayload:
