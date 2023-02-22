@@ -1,12 +1,12 @@
-from messagetypes import MessageType
-from typing import Callable, Dict, Union
-from messagetypes import Call,CallResult
-from exceptions import ValidationError, NotImplementedError
-from jsonschema.exceptions import ValidationError as SchemaValidationError
-
-from jsonschema import Draft4Validator
 import os
 import json
+from typing import Callable, Dict, Union
+from jsonschema.exceptions import ValidationError as SchemaValidationError
+from jsonschema import Draft4Validator
+
+from ocpp.messagetypes import MessageType
+from ocpp.messagetypes import Call,CallResult
+from ocpp.exceptions import ValidationError, NotImplementedError
 
 _validators: Dict[str, Draft4Validator] = {}
 
@@ -38,7 +38,6 @@ def get_validator(
     return _validators[schema_name]
 
 def validatePayload(message: Union[Call,CallResult]):
-    print(f"validation of {message}")
     if(type(message) not in [Call,CallResult]):
         raise ValidationError(
             f"It's '{type(message)}', but it should "

@@ -2,6 +2,20 @@ import functools
 
 routables = []
 
+def onresponse(action):
+
+    def decorator(func):
+        @functools.wraps(func)
+        def inner(*args, **kwargs):
+            return func(*args, **kwargs)
+
+        inner._on_response_action = action
+        if func.__name__ not in routables:
+            routables.append(func.__name__)
+        return inner
+
+    return decorator
+
 def on(action, *, skip_schema_validation=False):
 
     def decorator(func):
@@ -36,7 +50,7 @@ def create_route_map(obj):
 
     routes = {}
     for attr_name in routables:
-        for option in ["_on_action", "_after_action"]:
+        for option in ["_on_action", "_after_action","_on_response_action"]:
             try:
                 attr = getattr(obj, attr_name)
                 action = getattr(attr, option)

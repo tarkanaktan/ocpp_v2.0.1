@@ -1,17 +1,20 @@
 from dataclasses import asdict
+from typing import Dict, List, Union
+from jsonschema.exceptions import ValidationError as SchemaValidationError
 import asyncio
 import inspect
 import uuid
 import logging
 import time
 
-from ocppmessages import incomingmessages, outgoingmessages
-from messagetypes import Call, MessageType, unpack
-from validator import validatePayload
-from routing import create_route_map
-from jsonschema.exceptions import ValidationError as SchemaValidationError
+from ocpp.messagetypes import Call, MessageType, unpack
+from ocpp.validator import validatePayload
+from ocpp.routing import create_route_map
 
-from exceptions import (
+import ocpp.ocppmessages.outgoingmessages as outgoingmessages
+import ocpp.ocppmessages.incomingmessages as incomingmessages
+
+from ocpp.exceptions import (
     OCPPError,
     NotSupportedError,
 )
@@ -31,6 +34,7 @@ class ChargePoint():
         self.response_timeout = response_timeout
         self._connection = connection
         self.connectorid = connectorid
+        self.online = False
 
         self._call_lock = asyncio.Lock()
 
@@ -104,6 +108,7 @@ class ChargePoint():
             return
 
         payload_to_send = asdict(response)
+        payload_to_send = self.remove_nones(payload_to_send)
         message = msg.create_call_result(payload_to_send)
         if handlers["_skip_schema_validation"] is True:
             validatePayload(message)
@@ -124,8 +129,8 @@ class ChargePoint():
 
     async def call(self,payload):
         msg_payload = asdict(payload)
+        msg_payload = self.remove_nones(msg_payload)
         action_name = ""
-        print(payload.__class__.__name__)
         if "Request" in payload.__class__.__name__:
             action_name = payload.__class__.__name__[:-14]
         elif "Response" in payload.__class__.__name__:
@@ -143,10 +148,23 @@ class ChargePoint():
             LOGGER.error("No response")
 
         response.action = call.action
-        validatePayload(response)
-        #cls = getattr(self._call_result, action_name + "ResponsePayload")
-        #return cls(**response.payload)
-        return self._get_attiribute_list(action_name,response)
+        try:
+            validatePayload(response)
+        except Exception as e:
+            print(e)
+            return
+        try:
+            handlers = self.route_map[response.action]
+        except:
+            LOGGER.error("Couldn't get handlers with action")
+        try:
+            handler = handlers["_on_response_action"]
+            ret = handler(response)
+        except:
+            LOGGER.error("Couldn't get handler onresponse")
+        cls = getattr(self._call_result, action_name + "ResponsePayload")
+        return cls(**response.payload)
+        #return self._get_attiribute_list(action_name,response)
 
     def _get_attiribute_list(self, action_name, response):
         cls = getattr(self._call_result, action_name + "ResponsePayload")
@@ -159,7 +177,6 @@ class ChargePoint():
 
     async def _send(self, message):
         LOGGER.info("%s: send %s", self.id, message)
-        print("send",self.id, message)
         await self._connection.send(message)
 
     async def _get_response(self,unique_id,timeout):
@@ -179,4 +196,13 @@ class ChargePoint():
         if timeout_left < 0:
             raise asyncio.TimeoutError
 
-        return await self._get_specific_response(unique_id, timeout_left)
+        return await self._get_response(unique_id, timeout_left)
+
+    def remove_nones(self, data: Union[List, Dict]) -> Union[List, Dict]:
+        if isinstance(data, dict):
+            return {k: self.remove_nones(v) for k, v in data.items() if v is not None}
+
+        elif isinstance(data, list):
+            return [self.remove_nones(v) for v in data if v is not None]
+
+        return data

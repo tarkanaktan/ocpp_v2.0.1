@@ -1,6 +1,4 @@
 import json
-import time
-import uuid
 
 from ocpp.exceptions import (
     FormatViolationError,
