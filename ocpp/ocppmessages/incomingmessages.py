@@ -7,370 +7,370 @@ class BootNotificationResponsePayload:
     currentTime: str
     interval: int
     status: str 
-    customData: CustomData = field(default = None)
-    statusInfo: StatusInfo = field(default = None)
+    customData: CustomData = None
+    statusInfo: StatusInfo = None
 
 @dataclass 
 class HeartbeatResponsePayload:
     currentTime: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class AuthorizeResponsePayload:
     idTokenInfo: IdTokenInfo
-    certificateStatus: str = field(default = None)
-    customData: CustomData = field(default = None)
+    certificateStatus: str = None
+    customData: CustomData = None
 
 @dataclass
 class CancelReservationRequestPayload:
     reservationId: int
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class CertificateSignedRequestPayload:
     certificateChain: str
-    certificateType: str = field(default = None)
-    customData: CustomData = field(default = None)
+    certificateType: str = None
+    customData: CustomData = None
 
 @dataclass
 class ChangeAvailabilityRequestPayload:
     operationalStatus: str
-    evse: Evse = field(default = None)
-    customData: CustomData = field(default = None)
+    evse: Evse = None
+    customData: CustomData = None
 
 @dataclass
 class ClearCacheRequestPayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class ClearChargingProfileRequestPayload:
-    customData: CustomData = field(default = None)
-    chargingProfileId: int = field(default = None)
-    chargingProfileCriteria: ClearChargingProfile = field(default = None)
+    customData: CustomData = None
+    chargingProfileId: int = None
+    chargingProfileCriteria: ClearChargingProfile = None
 
 @dataclass
 class ClearDisplayMessageRequestPayload:
     id: int
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class ClearedChargingLimitResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class ClearVariableMonitoringRequestPayload:
     id: int
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class CostUpdatedRequestPayload:
     totalCost: int
     transactionId: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class CustomerInformationRequestPayload:
     requestId: int
     report: bool
     clear: bool
-    customData: CustomData = field(default = None)
-    customerIdentifier: str = field(default = None)
-    idToken: IdToken = field(default = None)
-    customerCertificate: CertificateHashData = field(default = None)
+    customData: CustomData = None
+    customerIdentifier: str = None
+    idToken: IdToken = None
+    customerCertificate: CertificateHashData = None
 
 @dataclass
 class DataTransferRequestPayload:
     vendorId: str
-    customData: CustomData = field(default = None)
-    messageId: str = field(default = None)
-    data: Dict = field(default = None)
+    customData: CustomData = None
+    messageId: str = None
+    data: Dict = None
 
 
 @dataclass
 class DeleteCertificateRequestPayload:
     certificateHashData: CertificateHashData
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class FirmwareStatusNotificationResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class Get15118EVCertificateResponsePayload:
     status: str
     exiResponse: str
-    customData: CustomData = field(default = None)
-    statusInfo: StatusInfo = field(default = None)
+    customData: CustomData = None
+    statusInfo: StatusInfo = None
 
 @dataclass
 class GetBaseReportRequestPayload:
     requestId: int
     reportBase: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class GetCertificateStatusResponsePayload:
     status: str
-    customData: CustomData = field(default = None)
-    statusInfo: StatusInfo = field(default = None)
-    ocspResult: str = field(default = None)
+    customData: CustomData = None
+    statusInfo: StatusInfo = None
+    ocspResult: str = None
 
 @dataclass
 class GetChargingProfilesRequestPayload:
     requestId: int
     chargingProfile: ChargingProfileCriterion
-    evseId: int = field(default = None)
-    customData: CustomData = field(default = None)
+    evseId: int = None
+    customData: CustomData = None
 
 @dataclass
 class GetCompositeScheduleRequestPayload:
     duration: int
     evseId: int
-    chargingRateUnit: str = field(default = None)
-    customData: CustomData = field(default = None)
+    chargingRateUnit: str = None
+    customData: CustomData = None
 
 @dataclass
 class GetDisplayMessagesRequestPayload:
     requestId: int
-    customData: CustomData = field(default = None)
-    id: int = field(default = None)
-    priority: str = field(default = None)
-    state: str = field(default = None)
+    customData: CustomData = None
+    id: int = None
+    priority: str = None
+    state: str = None
 
 @dataclass
 class GetInstalledCertificateIdsRequestPayload:
-    customData: CustomData = field(default = None)
-    certificateType: List[str] = field(default = None)
+    customData: CustomData = None
+    certificateType: List[str] = None
 
 @dataclass
 class GetLocalListVersionRequestPayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class GetLogRequestPayload:
     logType:  str
     requestId: int
     log: Log
-    customData: CustomData = field(default = None)
-    retries: int = field(default = None)
-    retryInterval: int = field(default = None)
+    customData: CustomData = None
+    retries: int = None
+    retryInterval: int = None
 
 @dataclass
 class GetMonitoringReportRequestPayload:
     requestId: int
-    customData: CustomData = field(default = None)
-    componentVariable: List[ComponentVariable] = field(default = None)
-    monitoringCriteria: List[str] = field(default = None)
+    customData: CustomData = None
+    componentVariable: List[ComponentVariable] = None
+    monitoringCriteria: List[str] = None
 
 @dataclass
 class GetReportRequestPayload:
     requestId: int
-    customData: CustomData = field(default = None)
-    componentVariable: List[ComponentVariable] = field(default = None)
-    componentCriteria: List[str] = field(default = None)
+    customData: CustomData = None
+    componentVariable: List[ComponentVariable] = None
+    componentCriteria: List[str] = None
 
 @dataclass
 class GetTransactionStatusRequestPayload:
-    customData: CustomData = field(default = None)
-    transactionId: str = field(default = None)
+    customData: CustomData = None
+    transactionId: str = None
 
 @dataclass
 class GetVariablesRequestPayload:
     getVariableData: GetVariableData
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class InstallCertificateRequestPayload:
     certificate: str
     certificateType: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
     
 @dataclass
 class LogStatusNotificationResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class MeterValuesResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class NotifyChargingLimitResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class NotifyCustomerInformationResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class NotifyDisplayMessagesResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class NotifyEVChargingNeedsResponsePayload:
     status: str
-    customData: CustomData = field(default = None)
-    statusInfo: StatusInfo = field(default = None)
+    customData: CustomData = None
+    statusInfo: StatusInfo = None
 
 @dataclass
 class NotifyEVChargingScheduleResponsePayload:
     status: str
-    customData: CustomData = field(default = None)
-    statusInfo: StatusInfo = field(default = None)
+    customData: CustomData = None
+    statusInfo: StatusInfo = None
 
 @dataclass
 class NotifyEventResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class NotifyMonitoringReportResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class NotifyReportRequestPayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class PublishFirmwareRequestPayload:
     location: str
     checksum: str
     requestId: int
-    customData: CustomData = field(default = None)
-    retries: int = field(default = None)
-    retryInterval: int = field(default = None)
+    customData: CustomData = None
+    retries: int = None
+    retryInterval: int = None
 
 @dataclass
 class PublishFirmwareStatusNotificationResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class ReportChargingProfilesResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class RequestStartTransactionRequestPayload:
     remoteStartId: int
     idToken: IdToken
-    customData: CustomData = field(default = None)
-    evseId: int = field(default = None)
-    groupIdToken: IdToken = field(default = None)
-    chargingProfile: ChargingProfileType = field(default = None)
+    customData: CustomData = None
+    evseId: int = None
+    groupIdToken: IdToken = None
+    chargingProfile: ChargingProfileType = None
 
 
 @dataclass
 class RequestStopTransactionRequestPayload:
     transactionId: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class ReservationStatusUpdateResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class ReserveNowRequestPayload:
     id: int
     expiryDateTime: str
     idToken: IdToken
-    customData: CustomData = field(default = None)
-    evseId: int = field(default = None)
-    groupIdToken: IdToken = field(default = None)
-    connectorType: str = field(default = None)
+    customData: CustomData = None
+    evseId: int = None
+    groupIdToken: IdToken = None
+    connectorType: str = None
 
 @dataclass
 class ResetRequestPayload:
     type: str
-    customData: CustomData = field(default = None)
-    evseId: int = field(default = None)
+    customData: CustomData = None
+    evseId: int = None
 
 @dataclass
 class SecurityEventNotificationResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SendLocalListRequestPayload:
     versionNumber: int
     updateType: str
-    customData: CustomData = field(default = None)
-    localAuthorizationList: List[AuthorizationData] = field(default = None)
+    customData: CustomData = None
+    localAuthorizationList: List[AuthorizationData] = None
 
 @dataclass
 class SetChargingProfileRequestPayload:
     evseId: int
     chargingProfile: ChargingProfileType
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SetDisplayMessageRequestPayload:
     message: Message
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SetMonitoringBaseRequestPayload:
     monitoringBase: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SetMonitoringLevelRequestPayload:
     severity: int
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SetNetworkProfileRequestPayload:
     configurationSlot:int
     connectionData: ConnectionData
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SetVariableMonitoringRequestPayload:
     setMonitoringData: List[SetMonitoringData]
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SetVariablesRequestPayload:
     setVariableData: List[SetVariableData]
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class SignCertificateResponsePayload:
     status: str
-    customData: CustomData = field(default = None)
-    statusInfo: StatusInfo = field(default = None)
+    customData: CustomData = None
+    statusInfo: StatusInfo = None
 
 @dataclass
 class StatusNotificationResponsePayload:
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class TransactionEventResponsePayload:
-    customData: CustomData = field(default = None)
-    totalCost: int = field(default = None)
-    chargingPriority: int = field(default = None)
-    idTokenInfo: IdTokenInfo = field(default = None)
-    updatedPersonalMessage: MessageContentType = field(default = None)
+    customData: CustomData = None
+    totalCost: int = None
+    chargingPriority: int = None
+    idTokenInfo: IdTokenInfo = None
+    updatedPersonalMessage: MessageContentType = None
 
 @dataclass
 class TriggerMessageRequestPayload:
     requestedMessage: str
-    customData: CustomData = field(default = None)
-    evse: Evse = field(default = None)
+    customData: CustomData = None
+    evse: Evse = None
 
 @dataclass
 class UnlockConnectorRequestPayload:
     evseId: int
     connectorId: int
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass
 class UnpublishFirmwareRequestPayload:
     checksum: str
-    customData: CustomData = field(default = None)
+    customData: CustomData = None
 
 @dataclass 
 class UpdateFirmwareRequestPayload:
     requestId: int
     firmware: Firmware
-    customData: CustomData = field(default = None)
-    retryInterval: int = field(default = None)
-    retries: int = field(default = None)
+    customData: CustomData = None
+    retryInterval: int = None
+    retries: int = None
 
 
 
