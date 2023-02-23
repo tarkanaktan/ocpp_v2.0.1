@@ -10,6 +10,7 @@ import time
 from ocpp.messagetypes import Call, MessageType, unpack
 from ocpp.validator import validatePayload
 from ocpp.routing import create_route_map
+from ocpp.logger import LOGGER
 
 import ocpp.ocppmessages.outgoingmessages as outgoingmessages
 import ocpp.ocppmessages.incomingmessages as incomingmessages
@@ -18,13 +19,6 @@ from ocpp.exceptions import (
     OCPPError,
     NotSupportedError,
 )
-
-logging.basicConfig(filename="newfile.log",
-                    format='%(asctime)s %(message)s',
-                    filemode='a')
-
-LOGGER = logging.getLogger()
-LOGGER.setLevel(logging.DEBUG)
 
 class ChargePoint():
 
@@ -35,6 +29,7 @@ class ChargePoint():
         self._connection = connection
         self.connectorid = connectorid
         self.online = False
+        self.logger = LOGGER().getLogger()
 
         self._call_lock = asyncio.Lock()
 
@@ -63,7 +58,7 @@ class ChargePoint():
         try:
             msg = unpack(raw_msg)
         except OCPPError as e:
-            LOGGER.exception(
+            self.logger.exception(
                 "Unable to parse message: '%s', it doesn't seem "
                 "to be valid OCPP: %s",
                 raw_msg,
@@ -75,7 +70,7 @@ class ChargePoint():
             try:
                 await self._handle_call(msg)
             except OCPPError as error:
-                LOGGER.exception("Error while handling request '%s'", msg)
+                self.logger.exception("Error while handling request '%s'", msg)
                 response = msg.create_call_error(error).to_json()
                 await self._send(response)
 
@@ -102,7 +97,7 @@ class ChargePoint():
             if inspect.isawaitable(response):
                 response = await response
         except Exception as e:
-            LOGGER.exception("Error while handling request '%s'", msg)
+            self.logger.exception("Error while handling request '%s'", msg)
             response = msg.create_call_error(e).to_json()
             await self._send(response)
             return
@@ -125,7 +120,7 @@ class ChargePoint():
             if inspect.isawaitable(response):
                 response = await response
         except Exception as e:
-            LOGGER.exception("Error while handling request '%s'", msg)
+            self.logger.exception("Error while handling request '%s'", msg)
 
     async def call(self,payload):
         msg_payload = asdict(payload)
@@ -145,7 +140,7 @@ class ChargePoint():
         try:
             response = await self._get_response(call.unique_id,self.response_timeout)
         except:
-            LOGGER.error("No response")
+            self.logger.error("No response")
 
         response.action = call.action
         try:
@@ -156,12 +151,12 @@ class ChargePoint():
         try:
             handlers = self.route_map[response.action]
         except:
-            LOGGER.error("Couldn't get handlers with action")
+            self.logger.error("Couldn't get handlers with action")
         try:
             handler = handlers["_on_response_action"]
             ret = handler(response)
         except:
-            LOGGER.error("Couldn't get handler onresponse")
+            self.logger.error("Couldn't get handler onresponse")
         cls = getattr(self._call_result, action_name + "ResponsePayload")
         return cls(**response.payload)
         #return self._get_attiribute_list(action_name,response)
@@ -176,7 +171,7 @@ class ChargePoint():
         return attribute
 
     async def _send(self, message):
-        LOGGER.info("%s: send %s", self.id, message)
+        self.logger.info("%s: send %s", self.id, message)
         await self._connection.send(message)
 
     async def _get_response(self,unique_id,timeout):
@@ -185,12 +180,12 @@ class ChargePoint():
             # Wait for response of the Call message.
             response = await asyncio.wait_for(self._response_queue.get(), timeout)
         except asyncio.TimeoutError:
-            LOGGER.error("Timeout")
+            self.logger.error("Timeout")
 
         if response.unique_id == unique_id:
             return response
 
-        LOGGER.error("Ignoring response with unknown unique id: %s", response)
+        self.logger.error("Ignoring response with unknown unique id: %s", response)
         timeout_left = wait_until - time.time()
 
         if timeout_left < 0:
