@@ -54,7 +54,6 @@ class ChargePoint():
             await self.route_message(message)
 
     async def route_message(self, raw_msg):
-
         try:
             msg = unpack(raw_msg)
         except OCPPError as e:
@@ -65,7 +64,6 @@ class ChargePoint():
                 e,
             )
             return
-
         if msg.message_type_id == MessageType.Call:
             try:
                 await self._handle_call(msg)
@@ -93,7 +91,7 @@ class ChargePoint():
                 details={"cause": f"No handler for {msg.action} registered."}
             )
         try:
-            response = handler()
+            response = handler(msg)
             if inspect.isawaitable(response):
                 response = await response
         except Exception as e:
@@ -116,7 +114,7 @@ class ChargePoint():
                 details={"cause": f"No handler for {msg.action} registered."}
             )
         try:
-            response = handler()
+            response = handler(payload_to_send)
             if inspect.isawaitable(response):
                 response = await response
         except Exception as e:
@@ -201,3 +199,5 @@ class ChargePoint():
             return [self.remove_nones(v) for v in data if v is not None]
 
         return data
+    
+

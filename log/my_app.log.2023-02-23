@@ -1,0 +1,23 @@
+[2023-02-23 14:04:55,887] INFO in chargepoint: CP_1: send [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-02-23 14:04:55,889] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 59, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-02-23 14:05:25,889] ERROR in chargepoint: Timeout
+[2023-02-23 14:05:25,889] ERROR in chargepoint: No response

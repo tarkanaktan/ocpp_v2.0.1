@@ -1,5 +1,5 @@
-[2023-02-23 14:04:55,887] INFO in chargepoint: CP_1: send [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
-[2023-02-23 14:04:55,889] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 13:25:49,331] INFO in chargepoint: CP_1: send [2,"97dcff55-77dd-491c-bb24-f9f07cde47f3","TriggerMessage",{"requestedMessage":"BootNotification"}]
+[2023-03-02 13:25:49,333] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"97dcff55-77dd-491c-bb24-f9f07cde47f3","TriggerMessage",{"requestedMessage":"BootNotification"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"97dcff55-77dd-491c-bb24-f9f07cde47f3","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
 Traceback (most recent call last):
   File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
     msg = json.loads(msg)
@@ -14,10 +14,807 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
 During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 59, in route_message
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
     msg = unpack(raw_msg)
   File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
     raise FormatViolationError(
-ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"51a504da-92f0-4f8a-89bf-81840a830612","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
-[2023-02-23 14:05:25,889] ERROR in chargepoint: Timeout
-[2023-02-23 14:05:25,889] ERROR in chargepoint: No response
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"97dcff55-77dd-491c-bb24-f9f07cde47f3","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+[2023-03-02 13:55:41,879] INFO in chargepoint: CP_1: send [2,"8bf01b7b-6254-4704-8c0e-517b44b68c7a","TriggerMessage",{"requestedMessage":"BootNotification"}]
+[2023-03-02 13:55:41,880] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"8bf01b7b-6254-4704-8c0e-517b44b68c7a","TriggerMessage",{"requestedMessage":"BootNotification"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"8bf01b7b-6254-4704-8c0e-517b44b68c7a","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"8bf01b7b-6254-4704-8c0e-517b44b68c7a","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+[2023-03-02 13:56:11,883] ERROR in chargepoint: Timeout
+[2023-03-02 13:56:11,883] ERROR in chargepoint: No response
+[2023-03-02 13:56:22,174] INFO in chargepoint: CP_1: send [2,"4e219ed6-1928-4496-8614-f6ad63158d89","TriggerMessage",{"requestedMessage":"BootNotification"}]
+[2023-03-02 13:56:22,175] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"4e219ed6-1928-4496-8614-f6ad63158d89","TriggerMessage",{"requestedMessage":"BootNotification"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"4e219ed6-1928-4496-8614-f6ad63158d89","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"4e219ed6-1928-4496-8614-f6ad63158d89","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+[2023-03-02 13:56:52,177] ERROR in chargepoint: Timeout
+[2023-03-02 13:56:52,177] ERROR in chargepoint: No response
+[2023-03-02 14:03:21,034] INFO in chargepoint: CP_1: send [2,"ebcc351c-0e97-4b69-861d-c66b6cd16ac6","TriggerMessage",{"requestedMessage":"BootNotification"}]
+[2023-03-02 14:03:21,037] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"ebcc351c-0e97-4b69-861d-c66b6cd16ac6","TriggerMessage",{"requestedMessage":"BootNotification"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"ebcc351c-0e97-4b69-861d-c66b6cd16ac6","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"ebcc351c-0e97-4b69-861d-c66b6cd16ac6","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+[2023-03-02 14:03:51,040] ERROR in chargepoint: Timeout
+[2023-03-02 14:03:51,040] ERROR in chargepoint: No response
+[2023-03-02 14:06:28,637] INFO in chargepoint: CP_1: send [2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"BootNotification"}]
+[2023-03-02 14:06:28,638] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"BootNotification"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"BootNotification"}]'}
+[2023-03-02 14:06:58,640] ERROR in chargepoint: Timeout
+[2023-03-02 14:06:58,640] ERROR in chargepoint: No response
+[2023-03-02 14:07:36,430] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 122, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:07:36,431] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:07:36,431] INFO in chargepoint: CP_1: send [2,"8aff6915-a40b-4988-b93f-13a063d1d896","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:07:36,432] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:07:36,433] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"8aff6915-a40b-4988-b93f-13a063d1d896","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"8aff6915-a40b-4988-b93f-13a063d1d896","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"8aff6915-a40b-4988-b93f-13a063d1d896","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:08:06,434] ERROR in chargepoint: Timeout
+[2023-03-02 14:08:06,434] ERROR in chargepoint: No response
+[2023-03-02 14:11:57,452] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 122, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:11:57,452] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:11:57,452] INFO in chargepoint: CP_1: send [2,"c0d684d6-7c32-45a8-ae8f-b7d881d74e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:11:57,460] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:11:57,463] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"c0d684d6-7c32-45a8-ae8f-b7d881d74e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"c0d684d6-7c32-45a8-ae8f-b7d881d74e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"c0d684d6-7c32-45a8-ae8f-b7d881d74e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:12:27,455] ERROR in chargepoint: Timeout
+[2023-03-02 14:12:27,455] ERROR in chargepoint: No response
+[2023-03-02 14:13:05,760] INFO in chargepoint: CP_1: send [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"Accepted"}]
+[2023-03-02 14:13:05,761] INFO in chargepoint: CP_1: send [2,"9ec9d721-960e-4d43-8cd3-fcd58ac65746","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:13:05,764] ERROR in chargepoint: Unable to parse message: 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"Accepted"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"Accepted"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"Accepted"}]'}
+[2023-03-02 14:13:05,765] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"9ec9d721-960e-4d43-8cd3-fcd58ac65746","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"9ec9d721-960e-4d43-8cd3-fcd58ac65746","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"9ec9d721-960e-4d43-8cd3-fcd58ac65746","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:13:35,763] ERROR in chargepoint: Timeout
+[2023-03-02 14:13:35,763] ERROR in chargepoint: No response
+[2023-03-02 14:32:14,316] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 124, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:32:14,316] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:32:14,317] INFO in chargepoint: CP_1: send [2,"6e4068e8-71da-4c28-af47-25fc928eaac6","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:32:14,318] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:32:14,318] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"6e4068e8-71da-4c28-af47-25fc928eaac6","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"6e4068e8-71da-4c28-af47-25fc928eaac6","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"6e4068e8-71da-4c28-af47-25fc928eaac6","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:32:44,806] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 124, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:32:44,807] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:32:44,807] INFO in chargepoint: CP_1: send [2,"79904af8-85d2-4a2e-af69-51c9fb24e225","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:32:44,808] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:32:44,809] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"79904af8-85d2-4a2e-af69-51c9fb24e225","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"79904af8-85d2-4a2e-af69-51c9fb24e225","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"79904af8-85d2-4a2e-af69-51c9fb24e225","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:33:14,844] ERROR in chargepoint: Timeout
+[2023-03-02 14:33:14,845] ERROR in chargepoint: No response
+[2023-03-02 14:34:53,356] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 125, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:34:53,357] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:34:53,357] INFO in chargepoint: CP_1: send [2,"287f4592-777e-49bd-bc24-81ff19df97f1","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:34:53,358] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:34:53,359] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"287f4592-777e-49bd-bc24-81ff19df97f1","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"287f4592-777e-49bd-bc24-81ff19df97f1","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"287f4592-777e-49bd-bc24-81ff19df97f1","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:35:13,781] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 126, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:35:13,781] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:35:13,782] INFO in chargepoint: CP_1: send [2,"aafe2e4e-df35-44be-8af1-d926a3c45e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:35:13,783] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:35:13,783] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"aafe2e4e-df35-44be-8af1-d926a3c45e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"aafe2e4e-df35-44be-8af1-d926a3c45e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"aafe2e4e-df35-44be-8af1-d926a3c45e02","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:35:43,785] ERROR in chargepoint: Timeout
+[2023-03-02 14:35:43,785] ERROR in chargepoint: No response
+[2023-03-02 14:35:47,827] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 126, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:35:47,827] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:35:47,827] INFO in chargepoint: CP_1: send [2,"f6937616-6225-4ffa-ae61-a2a07cf6aa80","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:35:47,828] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:35:47,834] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"f6937616-6225-4ffa-ae61-a2a07cf6aa80","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"f6937616-6225-4ffa-ae61-a2a07cf6aa80","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"f6937616-6225-4ffa-ae61-a2a07cf6aa80","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:36:17,831] ERROR in chargepoint: Timeout
+[2023-03-02 14:36:17,832] ERROR in chargepoint: No response
+[2023-03-02 14:36:53,734] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 125, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:36:53,735] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:36:53,735] INFO in chargepoint: CP_1: send [2,"b40ada1b-5aac-4ba5-8ffc-4628e993137a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:36:53,738] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:36:53,738] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"b40ada1b-5aac-4ba5-8ffc-4628e993137a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"b40ada1b-5aac-4ba5-8ffc-4628e993137a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"b40ada1b-5aac-4ba5-8ffc-4628e993137a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:37:23,739] ERROR in chargepoint: Timeout
+[2023-03-02 14:37:23,739] ERROR in chargepoint: No response
+[2023-03-02 14:40:00,403] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 125, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:40:00,404] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:40:00,405] INFO in chargepoint: CP_1: send [2,"0a2b8ed7-bfdf-498a-aa0a-8dccd61214f7","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:40:00,406] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:40:00,407] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"0a2b8ed7-bfdf-498a-aa0a-8dccd61214f7","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"0a2b8ed7-bfdf-498a-aa0a-8dccd61214f7","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"0a2b8ed7-bfdf-498a-aa0a-8dccd61214f7","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:40:14,272] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 123, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:40:14,273] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:40:14,273] INFO in chargepoint: CP_1: send [2,"28d9d751-7849-4e71-a8ec-5088c20e8504","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:40:14,276] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:40:14,287] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"28d9d751-7849-4e71-a8ec-5088c20e8504","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"28d9d751-7849-4e71-a8ec-5088c20e8504","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"28d9d751-7849-4e71-a8ec-5088c20e8504","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:40:44,275] ERROR in chargepoint: Timeout
+[2023-03-02 14:40:44,275] ERROR in chargepoint: No response
+[2023-03-02 14:50:29,612] INFO in chargepoint: CP_1: send [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]
+[2023-03-02 14:50:29,612] INFO in chargepoint: CP_1: send [2,"84d351fa-012a-4967-b454-174daad5f573","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:50:29,615] ERROR in chargepoint: Unable to parse message: 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]'}
+[2023-03-02 14:50:29,617] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"84d351fa-012a-4967-b454-174daad5f573","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"84d351fa-012a-4967-b454-174daad5f573","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"84d351fa-012a-4967-b454-174daad5f573","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:50:59,614] ERROR in chargepoint: Timeout
+[2023-03-02 14:50:59,615] ERROR in chargepoint: No response
+[2023-03-02 14:51:24,581] INFO in chargepoint: CP_1: send [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]
+[2023-03-02 14:51:24,582] INFO in chargepoint: CP_1: send [2,"a3940034-fd81-4b0a-808d-4cfa9b97cb1d","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:51:24,583] ERROR in chargepoint: Unable to parse message: 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [3,"83ec9e7c-378d-4317-90bd-c88d849d5158",{"status":"NotImplemented"}]'}
+[2023-03-02 14:51:24,584] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"a3940034-fd81-4b0a-808d-4cfa9b97cb1d","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"a3940034-fd81-4b0a-808d-4cfa9b97cb1d","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"a3940034-fd81-4b0a-808d-4cfa9b97cb1d","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:51:48,475] ERROR in chargepoint: Error while handling request '<Call - unique_id=83ec9e7c-378d-4317-90bd-c88d849d5158, action=TriggerMessage, payload={'requestedMessage': 'BootNotification'}>'
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 94, in _handle_call
+    response = handler(msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/routing.py", line 24, in inner
+    return func(*args, **kwargs)
+  File "/home/builder/Desktop/OCPP_working/application/myChargePoint.py", line 124, in on_trigger_message
+    return payload
+UnboundLocalError: local variable 'payload' referenced before assignment
+[2023-03-02 14:51:48,475] INFO in chargepoint: CP_1: send [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]
+[2023-03-02 14:51:48,475] INFO in chargepoint: CP_1: send [2,"805f8171-5c06-453c-a0e3-dab4ad83427a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-03-02 14:51:48,476] ERROR in chargepoint: Unable to parse message: 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [4,"83ec9e7c-378d-4317-90bd-c88d849d5158","InternalError","An unexpected error occurred.",{}]'}
+[2023-03-02 14:51:48,477] ERROR in chargepoint: Unable to parse message: 'Pong: [2,"805f8171-5c06-453c-a0e3-dab4ad83427a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]', it doesn't seem to be valid OCPP: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"805f8171-5c06-453c-a0e3-dab4ad83427a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 32, in unpack
+    msg = json.loads(msg)
+  File "/usr/lib/python3.8/json/__init__.py", line 357, in loads
+    return _default_decoder.decode(s)
+  File "/usr/lib/python3.8/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/usr/lib/python3.8/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/builder/Desktop/OCPP_working/ocpp/chargepoint.py", line 58, in route_message
+    msg = unpack(raw_msg)
+  File "/home/builder/Desktop/OCPP_working/ocpp/messagetypes.py", line 34, in unpack
+    raise FormatViolationError(
+ocpp.exceptions.FormatViolationError: FormatViolationError: Payload for Action is syntactically incorrect or structure for Action, {'cause': 'Message is not valid JSON', 'ocpp_message': 'Pong: [2,"805f8171-5c06-453c-a0e3-dab4ad83427a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]'}
+[2023-03-02 14:52:18,478] ERROR in chargepoint: Timeout
+[2023-03-02 14:52:18,479] ERROR in chargepoint: No response
