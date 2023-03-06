@@ -107,28 +107,76 @@ class MyChargePoint(ChargePoint):
 
     @on("TriggerMessage")
     def on_trigger_message(self,*args):
+        global check
+        global msg_payload
         requested_messages=["BootNotification","LogStatusNotification","FirmwareStatusNotification","Heartbeat","MeterValues","SignChargingStationCertificate","SignV2GCertificate","StatusNotification","TransactionEvent","SignCombinedCertificate","PublishFirmwareStatusNotification"]
         msg_payload = args[0].payload
         print("trigger message payload", msg_payload, msg_payload["requestedMessage"]) 
-        print(requested_messages[0])
         try:
             if any(s==msg_payload["requestedMessage"] for s in requested_messages):
+                payload = outgoingmessages.TriggerMessageResponsePayload("Accepted")
                 print("Triggered message is implemented so I will send it.")
+                check=True
+                return payload
             else:    
                 payload = outgoingmessages.TriggerMessageResponsePayload("NotImplemented")
                 print("Triggered message is not implemented so I will not send it.") 
+                return payload
 
         except:
             pass
 
-        return payload
     
     @after("TriggerMessage")
     async def after_trigger_message(self,*args):
-        trigger_message_payload = args[0]
-        print("after trigger", trigger_message_payload)
+        #trigger_message_payload = args[0]
+        try:
+            if (check):
+                print("yazdirsanya")
 
+                if msg_payload["requestedMessage"] == "BootNotification":
+                    request= outgoingmessages.BootNotificationRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "LogStatusNotification":
+                    request= outgoingmessages.LogStatusNotificationRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "FirmwareStatusNotification":
+                    request= outgoingmessages.FirmwareStatusNotificationRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "Heartbeat":
+                    request= outgoingmessages.HeartbeatRequestPayload()
+                    print("tefankardo mahsere hirremin")
+                    print(request)
+                elif msg_payload["requestedMessage"] == "MeterValues":
+                    request= outgoingmessages.MeterValuesRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "SignChargingStationCertificate":
+                    request= outgoingmessages.SignCertificateRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "SignV2GCertificate":
+                    request= outgoingmessages.SignCertificateRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "StatusNotification":
+                    request= outgoingmessages.StatusNotificationRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "TransactionEvent":
+                    request= outgoingmessages.TransactionEventRequestPayload()
+                    print(request)
+                elif msg_payload["requestedMessage"] == "SignCombinedCertificate":
+                    request= outgoingmessages.SignCertificateRequestPayload()
+                    print(request)            
+                elif msg_payload["requestedMessage"] == "PublishFirmwareStatusNotification":
+                    request= outgoingmessages.PublishFirmwareStatusNotificationRequestPayload()
+                    print(request)
+                else:
+                    pass
+            else:
+                pass    
+        except:
+            pass    
 
+        return request
+    
     @on("UpdateFirmware")
     def on_update_firmware(self):
         payload = outgoingmessages.UpdateFirmwareResponsePayload()
@@ -151,7 +199,7 @@ class MyChargePoint(ChargePoint):
 
     async def send_boot_notification(self):
         #request = incomingmessages.TriggerMessageRequestPayload(requestedMessage="BootNotification")
-        await self.route_message('''[2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"BootNotification"}]''')
+        await self.route_message('''[2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"Heartbeat"}]''')
         request = outgoingmessages.BootNotificationRequestPayload(
             chargingStation=messagedictionary.ChargingStation(model="Wallbox XYZ",vendorName="anewone"),
             reason="PowerUp",
