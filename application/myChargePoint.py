@@ -11,7 +11,7 @@ import ocpp.ocppmessages.messagedictionary as messagedictionary
 from application.enumtypes import *
 
 transactionOngoing = True
-resetFlag = False
+waitTransactionToEnd = False
 
 class MyChargePoint(ChargePoint):
     @onresponse("Heartbeat")
@@ -53,14 +53,16 @@ class MyChargePoint(ChargePoint):
         return payload
     @after("Reset")
     async def after_reset(self,*args):
-        global resetFlag
+        global waitTransactionToEnd
         reset_response_payload = args[0]
         print("after reset",reset_response_payload,reset_response_payload["status"])
         if(reset_response_payload["status"] == "Accepted"):
             print("reset immediately")
+            #TODO
         elif(reset_response_payload["status"] == "Scheduled"):
             print("wait for transcation to end")
-            resetFlag = True
+            waitTransactionToEnd = True
+            #TODO
 
 
     @on("ChangeAvailability")
@@ -94,14 +96,15 @@ class MyChargePoint(ChargePoint):
     
     @after("ChangeAvailability")
     async def after_change_availability(self,*args):
-        global resetFlag
+        global waitTransactionToEnd
         change_availability_payload = args[0]
         print("after change availability",change_availability_payload,change_availability_payload["status"])
         if(change_availability_payload["status"] == "Accepted"):
             print("change immediately")
+            #TODO
         elif(change_availability_payload["status"] == "Scheduled"):
             print("wait for transcation to end")
-            resetFlag = True     
+            waitTransactionToEnd = True     
 
 
 
@@ -109,11 +112,11 @@ class MyChargePoint(ChargePoint):
     def on_trigger_message(self,*args):
         global check
         global msg_payload
-        requested_messages=["BootNotification","LogStatusNotification","FirmwareStatusNotification","Heartbeat","MeterValues","SignChargingStationCertificate","SignV2GCertificate","StatusNotification","TransactionEvent","SignCombinedCertificate","PublishFirmwareStatusNotification"]
+        requested_messages=["BootNotification","LogStatusNotification","FirmwareStatusNotification","Heartbeat","MeterValues","SignChargingStationCertificate","SignV2GCertificate","StatusNotification","TransactionEvent","SignCombinedCertificate","PublishFirmwareStatusNotification"] #List of proper messages
         msg_payload = args[0].payload
         print("trigger message payload", msg_payload, msg_payload["requestedMessage"]) 
         try:
-            if any(s==msg_payload["requestedMessage"] for s in requested_messages):
+            if any(s==msg_payload["requestedMessage"] for s in requested_messages): #Check if coming message matches with one of the proper messages.
                 payload = outgoingmessages.TriggerMessageResponsePayload("Accepted")
                 print("Triggered message is implemented so I will send it.")
                 check=True
@@ -132,8 +135,8 @@ class MyChargePoint(ChargePoint):
         #trigger_message_payload = args[0]
         try:
             if (check):
-                print("yazdirsanya")
-
+                #sending request of triggered message
+                
                 if msg_payload["requestedMessage"] == "BootNotification":
                     request= outgoingmessages.BootNotificationRequestPayload()
                     print(request)
@@ -145,7 +148,6 @@ class MyChargePoint(ChargePoint):
                     print(request)
                 elif msg_payload["requestedMessage"] == "Heartbeat":
                     request= outgoingmessages.HeartbeatRequestPayload()
-                    print("tefankardo mahsere hirremin")
                     print(request)
                 elif msg_payload["requestedMessage"] == "MeterValues":
                     request= outgoingmessages.MeterValuesRequestPayload()
@@ -177,8 +179,21 @@ class MyChargePoint(ChargePoint):
 
         return request
     
+    @on("ReserveNow")
+    def on_reserve_now(self):
+        msg_payload = args[0].payload
+        print("reserve now payload", msg_payload, msg_payload["**"])
+        payload
+        return payload
+    @after("ReserveNow")
+    def after_update_firmware(self):
+        self.firmwareProcedure.start()
+        firmwareUpdateStart_flag = True
+    
+
+    
     @on("UpdateFirmware")
-    def on_update_firmware(self):
+    def on_reserve_now(self):
         payload = outgoingmessages.UpdateFirmwareResponsePayload()
         return payload
     @after("UpdateFirmware")
@@ -198,12 +213,12 @@ class MyChargePoint(ChargePoint):
             await asyncio.sleep(2)
 
     async def send_boot_notification(self):
-        #request = incomingmessages.TriggerMessageRequestPayload(requestedMessage="BootNotification")
-        await self.route_message('''[2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"Heartbeat"}]''')
-        request = outgoingmessages.BootNotificationRequestPayload(
-            chargingStation=messagedictionary.ChargingStation(model="Wallbox XYZ",vendorName="anewone"),
-            reason="PowerUp",
-        )
+        request = incomingmessages.ReserveNowRequestPayload(id=1,expiryDateTime="03/13/2023-18:00", idToken=messagedictionary.IdToken(idToken="idtag=3 and UUID=1",type="ISO14443"))
+        #await self.route_message('''[2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"Heartbeat"}]''')
+        #request = outgoingmessages.BootNotificationRequestPayload(
+        #    chargingStation=messagedictionary.ChargingStation(model="Wallbox XYZ",vendorName="anewone"),
+        #    reason="PowerUp",
+        #)
         try:
             response = await self.call(request)
             if response.status == RegistrationStatusEnumType.Accepted:
@@ -219,7 +234,7 @@ class MyChargePoint(ChargePoint):
     
     async def startProcedure(self):
         await asyncio.gather(
-            self.updateStatus(), self.send_boot_notification(), self.scheduledResetProcedure()
+            self.updateStatus(), self.send_boot_notification(), self.transactionCheck()
         )
 
     async def updateStatus(self):
@@ -233,12 +248,12 @@ class MyChargePoint(ChargePoint):
                 previous_state = actual_state
             await asyncio.sleep(1)
      
-    async def scheduledResetProcedure(self):
+    async def transactionCheck(self):
         global transactionOngoing
-        global resetFlag
+        global waitTransactionToEnd
         counter=0
 
-        while resetFlag:
+        while waitTransactionToEnd:
             counter+=1
             await asyncio.sleep(1)
             if transactionOngoing == False:
