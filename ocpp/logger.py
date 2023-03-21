@@ -1,6 +1,6 @@
 from logging.config import dictConfig
 import logging
-import time, os
+import sys, os
 from os.path import exists
 
 def checkLogFile():
@@ -41,23 +41,10 @@ class LOGGER():
         },
         })
 
+        console = logging.StreamHandler(sys.stdout)
+        console.setLevel(logging.INFO)
         self.logger = logging.getLogger("simple")
+        self.logger.addHandler(console)
 
     def getLogger(self):
         return self.logger
-        
-
-    
-
-
-
-    
-
-
-
-
-
-
-#while True:
-#    logger.error("This is a test error")
-#    time.sleep(20)

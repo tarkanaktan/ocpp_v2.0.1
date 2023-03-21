@@ -1,12 +1,14 @@
 import asyncio
 import random
 import json
+from dataclasses import asdict
 from datetime import datetime
 from ocpp.chargepoint import ChargePoint, LOGGER
 from ocpp.routing import onresponse,on,after
 import ocpp.ocppmessages.incomingmessages as incomingmessages
 import ocpp.ocppmessages.outgoingmessages as outgoingmessages
 import ocpp.ocppmessages.messagedictionary as messagedictionary
+from application.reservation import Reservation
 
 from application.enumtypes import *
 
@@ -21,15 +23,6 @@ class MyChargePoint(ChargePoint):
     @onresponse("BootNotification")
     def on_response_bootnotification(self,*args, **kwargs):
         print("on response of boot")
-    @on("BootNotification",skip_schema_validation=True)
-    def on_boot_notification(self):
-        print("bootNotification sent on")
-        payload = incomingmessages.BootNotificationResponsePayload(interval=5,currentTime="2023-02-15T14:12:12.312173")
-        return payload
-
-    @after("BootNotification")
-    def after_boot_notification(self):
-        print("bootNotification sent after")
 
     @on("Reset")
     def on_reset(self,*args):
@@ -63,6 +56,66 @@ class MyChargePoint(ChargePoint):
             print("wait for transcation to end")
             waitTransactionToEnd = True
             #TODO
+    @on("SetVariables")
+    async def on_setVariables(self,*args):
+        payload = args[0].payload
+        resultList = []
+        setVariableData = payload["setVariableData"]
+        for variable in setVariableData:
+            try:
+                attributeType = variable["attributeType"]
+            except:
+                attributeType = None
+            try:
+                attributeType = variable["attributeType"]
+            except:
+                attributeType = None
+            try:
+                componentInstance = variable["component"]["instance"]
+            except:
+                componentInstance = None
+            try:
+                variableInstance = variable["variable"]["instance"]
+            except:
+                variableInstance = None
+            value = variable["attributeValue"]
+            attributeStatus = await self.variables.checkAttributeStatus(variable,value)
+            componentData = outgoingmessages.Component(name=variable["component"]["name"],instance=componentInstance)
+            variableData = outgoingmessages.Variable(name=variable["variable"]["name"],instance=variableInstance)
+            result = outgoingmessages.SetVariableResult(attributeStatus=attributeStatus,component=asdict(componentData),variable=asdict(variableData),attributeType= attributeType)
+            resultList.append(result)
+        response = outgoingmessages.SetVariablesResponsePayload(setVariableResult=resultList)
+        return response
+
+    @after("SetVariables")
+    def after_setVariables(self,*args):
+        print("after setVariable")
+
+    @on("GetVariables")
+    async def on_getVariables(self,*args):
+        payload = args[0].payload
+        resultList =[]
+        getVariableData = payload["getVariableData"]
+        for variable in getVariableData:
+            try:
+                attributeType = variable["attributeType"]
+            except:
+                attributeType = None
+            try:
+                componentInstance = variable["component"]["instance"]
+            except:
+                componentInstance = None
+            try:
+                variableInstance = variable["variable"]["instance"]
+            except:
+                variableInstance = None
+            componentData = outgoingmessages.Component(name=variable["component"]["name"],instance=componentInstance)
+            variableData = outgoingmessages.Variable(name=variable["variable"]["name"],instance=variableInstance)
+            attrValue = await self.variables.getAttributeValue(variable)#attrValue contins value and attrStatus
+            result = outgoingmessages.GetVariableResult(attributeStatus=attrValue[1],attributeValue=attrValue[0],component=componentData,variable=variableData)
+            resultList.append(result)
+        response = outgoingmessages.GetVariablesResponsePayload(getVariableResult=resultList)
+        return response
 
 
     @on("ChangeAvailability")
@@ -180,53 +233,89 @@ class MyChargePoint(ChargePoint):
         return request
     
     @on("ReserveNow")
-    def on_reserve_now(self):
+    def on_reserve_now(self,*args):
+        global actual_state
         msg_payload = args[0].payload
-        print("reserve now payload", msg_payload, msg_payload["**"])
-        payload
-        return payload
-    @after("ReserveNow")
-    def after_update_firmware(self):
-        self.firmwareProcedure.start()
-        firmwareUpdateStart_flag = True
-    
+        try:
+            evseId = msg_payload["evseId"]
+        except:
+            evseId = None
+        try:
+            connectorType = msg_payload["connectorType"]
+        except:
+            connectorType = None
+        try:
+            groupIdToken = msg_payload["groupIdToken"]
+        except:
+            groupIdToken = None
+        print("reserve now payload", msg_payload)
+        if self.variables.ReservationEnabled is True:
+            if evseId is None:
+                for i in range(1,3):
+                    if self.evseList[i].reservation is None and self.evseList[i].status == ConnectorStatusEnumType.Faulted:
+                        payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Faulted)
+                    elif self.evseList[i].reservation is None and self.evseList[i].status == ConnectorStatusEnumType.Available:
+                        reservation = Reservation(msg_payload["id"],msg_payload["expiryDateTime"],msg_payload["idToken"])
+                        self.evseList[i].setReservation(reservation)
+                        print(self.evseList[i].connectorId)
+                        payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Accepted)
+                        actual_state = ConnectorStatusEnumType.Reserved
+                        break
+                    else:
+                        payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Occupied)
+            else:
+                for evse in self.evseList:
+                    if(msg_payload["evseId"] == evse.connectorId and evse.reservation is None):
+                        reservation = Reservation(msg_payload["id"],msg_payload["expiryDateTime"],msg_payload["idToken"],msg_payload["evseId"])
+                        evse.setReservation(reservation)
+                        payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Accepted)
+                        actual_state = ConnectorStatusEnumType.Reserved
+                        break
+                    elif (msg_payload["evseId"] == evse.connectorId and evse.status == ConnectorStatusEnumType.Faulted):
+                        payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Faulted)
 
-    
-    @on("UpdateFirmware")
-    def on_reserve_now(self):
-        payload = outgoingmessages.UpdateFirmwareResponsePayload()
+                    elif (msg_payload["evseId"] == evse.connectorId and evse.reservation is not None):
+                        payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Occupied)
+        else:
+            payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Rejected)
         return payload
-    @after("UpdateFirmware")
-    def after_update_firmware(self):
-        self.firmwareProcedure.start()
-        firmwareUpdateStart_flag = True
 
     async def send_heartbeat(self, interval):
         request = outgoingmessages.HeartbeatRequestPayload()
         while True:
             global actual_state
             await self.call(request)
-            #await self.route_message('''[2,"8604bf8b-c12c-4de3-924e-1ea3afd8c66c","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]''')
-            await asyncio.sleep(interval-2)
+            await asyncio.sleep(2)
+            await self.route_message('''[2,"cda5d782-dfe2-4f44-a946-405bc76dab72","ReserveNow",{"id":1,"expiryDateTime":"2023-03-20T11:38:44.094356","idToken":{"idToken":"12345678","type":"ISO14443"}}]''')
+            await asyncio.sleep(1)
+            await self.route_message('''[2,"asd5d782-dfe2-4f44-a946-405bc76dab72","ReserveNow",{"id":2,"expiryDateTime":"2023-03-20T11:38:44.094356","idToken":{"idToken":"asdfghjk","type":"ISO14443"}}]''')
+            await asyncio.sleep(1)
+            await self.route_message('''[2,"asd12345-dfe2-4f44-a946-405bc76dab72","ReserveNow",{"id":3,"expiryDateTime":"2023-03-20T11:38:44.094356","idToken":{"idToken":"1232asda","type":"ISO14443"}}]''')            
+            await asyncio.sleep(1)
             random_attr = random.choice(ConnectorStatusEnumType.attrlist)
             actual_state = getattr(ConnectorStatusEnumType,random_attr)
-            await asyncio.sleep(2)
+            await asyncio.sleep(interval - 5)
 
     async def send_boot_notification(self):
-        request = incomingmessages.ReserveNowRequestPayload(id=1,expiryDateTime="03/13/2023-18:00", idToken=messagedictionary.IdToken(idToken="idtag=3 and UUID=1",type="ISO14443"))
-        #await self.route_message('''[2,"83ec9e7c-378d-4317-90bd-c88d849d5158","TriggerMessage",{"requestedMessage":"Heartbeat"}]''')
-        #request = outgoingmessages.BootNotificationRequestPayload(
-        #    chargingStation=messagedictionary.ChargingStation(model="Wallbox XYZ",vendorName="anewone"),
-        #    reason="PowerUp",
-        #)
+        idtoken = incomingmessages.IdToken(idToken="12345678",type=IdTokenEnumType.ISO14443)
+        req = incomingmessages.ReserveNowRequestPayload(id=1,expiryDateTime=datetime.utcnow().isoformat(), idToken=idtoken)
+        #await self.call(req)
+        await self.route_message('''[2,"885da9cf-86bd-4a24-b8a4-de990a818226","SetVariables",{"setVariableData":[{"attributeValue":180,"component":{"name":"OCPPCommCtrlr"},"variable":{"name":"HeartbeatInterval"}},{"attributeValue":"True","component":{"name":"ReservationCtrlr"},"variable":{"name":"Enabled"}}]}] ''')
+        #await self.route_message('''[2,"30902697-03ef-4754-9ba4-6f8dd109ddf7","GetVariables",{"getVariableData":[{"component":{"name":"OCPPCommCtrlr"},"variable":{"name":"HeartbeatInterval"}},{"component":{"name":"DeviceDataCtrlr"},"variable":{"name":"ItemsPerMessage","instance":"GetVariables"}}]}]''')
+        request = outgoingmessages.BootNotificationRequestPayload(
+            chargingStation=messagedictionary.ChargingStation(model="Wallbox XYZ",vendorName="anewone"),
+            reason="PowerUp",
+        )
         try:
             response = await self.call(request)
             if response.status == RegistrationStatusEnumType.Accepted:
-                LOGGER.info("Connected to central system.")
+                self.logger.info("Connected to central system.")
                 self.online = True
+                #await self.variables.setVariable("HeartbeatInterval",response.interval)
+                print(self.variables.HeartbeatInterval)
                 await self.send_heartbeat(response.interval)
             elif response.status == RegistrationStatusEnumType.Pending or response.status == RegistrationStatusEnumType.Rejected:
-                LOGGER.info("Pending received trying to reconnect to central system.")
+                self.logger.info("Pending received trying to reconnect to central system.")
                 await asyncio.sleep(response.interval)
                 await self.send_boot_notification()
         except Exception as e:
@@ -239,12 +328,26 @@ class MyChargePoint(ChargePoint):
 
     async def updateStatus(self):
         global actual_state 
+        firstBootFlag = True
+        for evse in self.evseList:
+            evse.status = ConnectorStatusEnumType.Faulted
         previous_state = ConnectorStatusEnumType.Uninitialized
         actual_state = ConnectorStatusEnumType.Uninitialized
         while True:
+            if(firstBootFlag and previous_state != actual_state):
+                for evse in self.evseList:
+                    evse.status = actual_state
+                    print("evse.status",evse.status)
+                    request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=actual_state,evseId=self.id,connectorId=evse.connectorId)
+                    await self.call(request)
+                previous_state = actual_state
+                firstBootFlag = False
             if(previous_state != actual_state):
-                request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=actual_state,evseId=self.id,connectorId=self.connectorid)
-                await self.call(request)
+                for i in range(1,self.connectorCount+1):
+                    evse.status = actual_state
+                    print("evse.status",evse.status)
+                    request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=actual_state,evseId=self.id,connectorId=self.evseList[i].connectorId)
+                    await self.call(request)
                 previous_state = actual_state
             await asyncio.sleep(1)
      

@@ -6,6 +6,9 @@ import inspect
 import uuid
 import logging
 import time
+import sys
+
+from application.evse import Evse
 
 from ocpp.messagetypes import Call, MessageType, unpack
 from ocpp.validator import validatePayload
@@ -22,13 +25,13 @@ from ocpp.exceptions import (
 
 class ChargePoint():
 
-    def __init__(self, id, connection, connectorid, response_timeout=30):
+    def __init__(self, id, connection, variables,response_timeout=30):
 
         self.id = id
         self.response_timeout = response_timeout
         self._connection = connection
-        self.connectorid = connectorid
         self.online = False
+        self.evseList = []
         self.logger = LOGGER().getLogger()
 
         self._call_lock = asyncio.Lock()
@@ -45,6 +48,22 @@ class ChargePoint():
 
         self._call_result = incomingmessages
         self._call = outgoingmessages
+
+        self.variables = variables
+
+    def setConnectorCount(self,connectorCount):
+        self.connectorCount = connectorCount
+
+    def createEvseObject(self):
+        for id in range(self.connectorCount+1):
+            evseObject = Evse(id)
+            self.evseList.append(evseObject)
+
+    def createEvseObjectsAsAttribute(self):
+        attributes = self.__dict__
+        for id in range(self.connectorCount+1):
+            name = 'Evse' + str(id)
+            attributes[name] = Evse(id)
     
     async def start(self):
         while True:
@@ -54,6 +73,7 @@ class ChargePoint():
             await self.route_message(message)
 
     async def route_message(self, raw_msg):
+
         try:
             msg = unpack(raw_msg)
         except OCPPError as e:
@@ -64,6 +84,7 @@ class ChargePoint():
                 e,
             )
             return
+
         if msg.message_type_id == MessageType.Call:
             try:
                 await self._handle_call(msg)
@@ -110,11 +131,10 @@ class ChargePoint():
         try:
             handler = handlers["_after_action"]
         except KeyError:
-            raise NotSupportedError(
-                details={"cause": f"No handler for {msg.action} registered."}
-            )
+            print("No after action")
+            return
         try:
-            response = handler(payload_to_send)
+            response = handler(payload_to_send,msg)
             if inspect.isawaitable(response):
                 response = await response
         except Exception as e:
@@ -134,7 +154,6 @@ class ChargePoint():
             payload=msg_payload,
         )
         await self._send(call.to_json())
-        print("{}: send message {} ".format(self.id, call.to_json()))
         try:
             response = await self._get_response(call.unique_id,self.response_timeout)
         except:
