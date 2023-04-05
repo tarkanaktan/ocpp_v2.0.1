@@ -87,10 +87,6 @@ class MyChargePoint(ChargePoint):
         response = outgoingmessages.SetVariablesResponsePayload(setVariableResult=resultList)
         return response
 
-    @after("SetVariables")
-    def after_setVariables(self,*args):
-        print("after setVariable")
-
     @on("GetVariables")
     async def on_getVariables(self,*args):
         payload = args[0].payload
@@ -117,7 +113,54 @@ class MyChargePoint(ChargePoint):
         response = outgoingmessages.GetVariablesResponsePayload(getVariableResult=resultList)
         return response
 
+    @on("GetBaseReport")
+    def on_getBaseReport(self,*args):
+        payload = args[0].payload
+        response = outgoingmessages.GetBaseReportResponsePayload(GenericDeviceModelStatusEnumType.Accepted)
+        return response
 
+    @after("GetBaseReport")
+    async def after_getBaseReport(self,*args):
+        payload = args[1].payload
+        reportBase = payload["reportBase"]
+        requestId = payload["requestId"]
+        seqNo = 0
+        request = outgoingmessages.NotifyReportRequestPayload(requestId=requestId,generatedAt=datetime.utcnow().isoformat(),seqNo=seqNo)
+        await self.call(request)
+    
+    @on("GetReport")
+    def on_getBaseReport(self,*args):
+        payload = args[0].payload
+        requestId = payload["requestId"]
+        try:
+            componentCriteria = payload["componentCriteria"]
+        except:
+            componentCriteria = None
+        try:
+            componentVariable = payload["componentVariable"]
+        except:
+            componentVariable = None
+    
+    @on("SetNetworkProfile")
+    async def on_setNetworkProfile(self,*args):
+        payload = args[0].payload
+        connectionData = payload["connectionData"] #TODO store this data
+        configurationSlot = payload["configurationSlot"]
+        if(connectionData["ocppVersion"] != OCPPVersionEnumType.OCPP20 or connectionData["ocppTransport"] != OCPPTransportEnumType.JSON):
+            response = outgoingmessages.SetNetworkProfileResponsePayload(status=SetNetworkProfileStatusEnumType.Rejected)
+            return response
+        if(int(connectionData["securityProfile"]) < int(self.variables.SecurityProfile)):
+            response = outgoingmessages.SetNetworkProfileResponsePayload(status=SetNetworkProfileStatusEnumType.Rejected)
+            return response
+        try:
+            await self.variables.putNetworkProfile(configurationSlot,str(connectionData))
+        except:
+            response = outgoingmessages.SetNetworkProfileResponsePayload(status=SetNetworkProfileStatusEnumType.Failed)
+            return response
+        response = outgoingmessages.SetNetworkProfileResponsePayload(status=SetNetworkProfileStatusEnumType.Accepted)
+        return response
+
+#Change Availability: It enables the CSMS to change the availability of an EVSE or Connector or Charging Station to Operative or Inoperative 
     @on("ChangeAvailability")
     def on_change_availability(self,*args):
         global transactionOngoing
@@ -182,7 +225,6 @@ class MyChargePoint(ChargePoint):
         except:
             pass
 
-    
     @after("TriggerMessage")
     async def after_trigger_message(self,*args):
         #trigger_message_payload = args[0]
@@ -259,7 +301,8 @@ class MyChargePoint(ChargePoint):
                         self.evseList[i].setReservation(reservation)
                         print(self.evseList[i].connectorId)
                         payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Accepted)
-                        actual_state = ConnectorStatusEnumType.Reserved
+                        #actual_state = ConnectorStatusEnumType.Reserved
+                        self.evseList[i].status = ConnectorStatusEnumType.Reserved
                         break
                     else:
                         payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Occupied)
@@ -269,7 +312,8 @@ class MyChargePoint(ChargePoint):
                         reservation = Reservation(msg_payload["id"],msg_payload["expiryDateTime"],msg_payload["idToken"],msg_payload["evseId"])
                         evse.setReservation(reservation)
                         payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Accepted)
-                        actual_state = ConnectorStatusEnumType.Reserved
+                        #actual_state = ConnectorStatusEnumType.Reserved
+                        self.evseList[i].status = ConnectorStatusEnumType.Reserved
                         break
                     elif (msg_payload["evseId"] == evse.connectorId and evse.status == ConnectorStatusEnumType.Faulted):
                         payload = outgoingmessages.ReserveNowResponsePayload(ReserveNowStatusEnumType.Faulted)
@@ -323,34 +367,52 @@ class MyChargePoint(ChargePoint):
     
     async def startProcedure(self):
         await asyncio.gather(
-            self.updateStatus(), self.send_boot_notification(), self.transactionCheck()
+            self.updateStatus(), self.send_boot_notification(), self.transactionCheck(),self.evseHandler()
         )
 
     async def updateStatus(self):
-        global actual_state 
-        firstBootFlag = True
+        global actual_state
+        timer = 0
+        previousOperationList = []
+        previousStateList = []
         for evse in self.evseList:
-            evse.status = ConnectorStatusEnumType.Faulted
-        previous_state = ConnectorStatusEnumType.Uninitialized
+            evse.status = ConnectorStatusEnumType.Available
+            evse.operation = OperationalStatusEnumType.Operative
+            previousStateList.append(ConnectorStatusEnumType.Uninitialized)
+            previousOperationList.append(OperationalStatusEnumType.Operative)
         actual_state = ConnectorStatusEnumType.Uninitialized
         while True:
-            if(firstBootFlag and previous_state != actual_state):
-                for evse in self.evseList:
-                    evse.status = actual_state
-                    print("evse.status",evse.status)
-                    request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=actual_state,evseId=self.id,connectorId=evse.connectorId)
+            for i in range(self.connectorCount+1):
+                if(previousStateList[i] != self.evseList[i].status and self.online is True):
+                    previousStateList[i] = self.evseList[i].status
+                    request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=self.evseList[i].status,evseId=self.evseList[i].connectorId,connectorId=self.evseList[i].connectorId)
                     await self.call(request)
-                previous_state = actual_state
-                firstBootFlag = False
-            if(previous_state != actual_state):
-                for i in range(1,self.connectorCount+1):
-                    evse.status = actual_state
-                    print("evse.status",evse.status)
-                    request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=actual_state,evseId=self.id,connectorId=self.evseList[i].connectorId)
-                    await self.call(request)
-                previous_state = actual_state
+                elif(previousOperationList[i] != self.evseList[i].operation and self.online is True):
+                    if waitTransactionToEnd is False:
+                        previousOperationList[i] = self.evseList[i].operation
+                        if(self.evseList[i].operation == "Operative"):
+                            request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=self.evseList[i].status,evseId=self.evseList[i].connectorId,connectorId=self.evseList[i].connectorId)
+                        elif(self.evseList[i].operation == "InOperative" and self.evseList[i].status == ConnectorStatusEnumType.Faulted):
+                            request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=self.evseList[i].status,evseId=self.evseList[i].connectorId,connectorId=self.evseList[i].connectorId)
+                        else:
+                            self.evseList[i].status = ConnectorStatusEnumType.Unavailable
+                            previousStateList[i] = self.evseList[i].status
+                            request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=ConnectorStatusEnumType.Unavailable,evseId=self.evseList[i].connectorId,connectorId=self.evseList[i].connectorId)
+                        await self.call(request)
+                    else:
+                        pass
+                elif(timer >= self.variables.OfflineThreshold and self.online is False):
+                    timer = 0
+                    request = outgoingmessages.StatusNotificationRequestPayload(timestamp=datetime.utcnow().isoformat(),connectorStatus=self.evseList[i].status,evseId=self.evseList[i].connectorId,connectorId=self.evseList[i].connectorId) #TODO offline behaviour will be added
             await asyncio.sleep(1)
-     
+            timer = timer + 1
+    
+    async def evseHandler(self):
+        while True:
+            for evse in self.evseList:
+                await evse.evseControl(self)
+            await asyncio.sleep(1)
+            
     async def transactionCheck(self):
         global transactionOngoing
         global waitTransactionToEnd
@@ -361,6 +423,7 @@ class MyChargePoint(ChargePoint):
             await asyncio.sleep(1)
             if transactionOngoing == False:
                 print("Transaction has ended request will occur", transactionOngoing)
+                waitTransactionToEnd = False
                 return
             
             if counter == 10 :

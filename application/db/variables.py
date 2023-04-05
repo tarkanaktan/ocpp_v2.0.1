@@ -3,6 +3,8 @@ from application.db.dbhandler import dbValueEnums
 from typing import Dict, List, Union
 from application.enumtypes import *
 
+rebootRequiredVariables = ["NetworkConfigurationPriority"]
+
 def boolControl(value):
     capitalize_val = str(value).lower().capitalize()
     if(capitalize_val == 'True' or capitalize_val == 'False'):
@@ -34,7 +36,7 @@ class Variables():
                 if(row[1] == "bool"):
                     attributes[row[0]] = eval(row[2])
                 else:
-                    attributes[row[0]] = row[2]
+                    attributes[row[0]] = row[2] #TODO set values of list types as list
         except Exception as e:
             print(e)
 
@@ -65,6 +67,9 @@ class Variables():
         if(mutability == 'WriteOnly'):
             return (None,GetVariableStatusEnumType.Rejected)
         value = ret[dbValueEnums.value]
+        listTypes = ["MemberList","OptionList","SequenceList"]
+        if any(ret[dbValueEnums.dataType] == listType for listType in listTypes):
+            value = str(value).split(",")
         return (value,GetVariableStatusEnumType.Accepted) #value
     
     async def checkAttributeStatus(self,variable,value):
@@ -81,36 +86,62 @@ class Variables():
         variableDict = {"componentName":componantName,"variableName":variableName,"variableInstance":variableInstance}
         ret = await dbhandler.selectVariableFromDb(variableDict) #ret contains id,ocppName,componentName,variableName,variableInstance,dataType,mutability,value
         if ret is None:
-            return "UnknownVariable" #TODO check for unkown component or variable
+            return SetVariableStatusEnumType.UnknownVariable #TODO check for unkown component or variable
         if(ret[dbValueEnums.mutability] == "ReadOnly"):
-            return "Rejected"
+            return SetVariableStatusEnumType.Rejected
         else:
             if(ret[dbValueEnums.dataType] == "int" and isinstance(value,int)):
                 print("set value",ret[1],value)
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    print("reboot")
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             elif(ret[dbValueEnums.dataType] == "bool" and boolControl(value)):
                 print("type of value",type(ret[dbValueEnums.value]),type(eval(value)))
                 print("set value",ret[dbValueEnums.ocppName],eval(value))
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             elif(ret[dbValueEnums.dataType] == "str" and isinstance(value,str)):
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             elif(ret[dbValueEnums.dataType] == "DateTime"):
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             elif(ret[dbValueEnums.dataType] == "MemberList"):
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             elif(ret[dbValueEnums.dataType] == "SequenceList"):
+                print(value,type(value))
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             elif(ret[dbValueEnums.dataType] == "OptionList"):
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             elif(ret[dbValueEnums.dataType] == "passwordString"):
                 await self.setVariable(ret[dbValueEnums.ocppName],value,ret[dbValueEnums.dataType])
-                return "Accepted"
+                if any(ret[dbValueEnums.ocppName] == name for name in rebootRequiredVariables):
+                    return SetVariableStatusEnumType.RebootRequired
+                return SetVariableStatusEnumType.Accepted
             else:
-                return "Rejected"
+                return SetVariableStatusEnumType.Rejected
+
+    async def putNetworkProfile(self,slot,data):
+        await dbhandler.putNetworkProfileIntoDb(slot,data)
+
+    async def getNetworkProfile(self,slot):
+        entry = await dbhandler.getNetworkProfileFromDb(slot)
+        msg = entry[0].replace("\'", "\"")
+        return msg

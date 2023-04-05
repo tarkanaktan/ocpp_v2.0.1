@@ -411,14 +411,14 @@ class OCPPInterfaceEnumType():
     Wireless3 = "Wireless3"
 
 class OCPPTransportEnumType():
-    JSOM = "JSON"
+    JSON = "JSON"
     SOAP = "SOAP"
 
 class OCPPVersionEnumType():
     OCPP12 = "OCPP12"
     OCPP15 = "OCPP15"
-    CPP16 = "OCPP16"
-    CPP20 = "OCPP20"
+    OCPP16 = "OCPP16"
+    OCPP20 = "OCPP20"
 
 class OperationalStatusEnumType():
     Operative = "Operative"

@@ -25,7 +25,7 @@ from ocpp.exceptions import (
 
 class ChargePoint():
 
-    def __init__(self, id, connection, variables,response_timeout=30):
+    def __init__(self, id, connection, variables, uriList,response_timeout=30):
 
         self.id = id
         self.response_timeout = response_timeout
@@ -33,6 +33,7 @@ class ChargePoint():
         self.online = False
         self.evseList = []
         self.logger = LOGGER().getLogger()
+        self.uriList = uriList
 
         self._call_lock = asyncio.Lock()
 
@@ -68,7 +69,8 @@ class ChargePoint():
     async def start(self):
         while True:
             message = await self._connection.recv()
-            print("{}: receive message {}".format(self.id, message))
+            self.logger.info("%s: receive message %s", self.id, message)
+            #print("{}: receive message {}".format(self.id, message))
 
             await self.route_message(message)
 

@@ -21,9 +21,9 @@ defaultVariables = [
     {"ocppName": "DefaultMessageTimeout","componentName": "OCPPCommCtrlr","variableName":"MessageTimeout","variableInstance":"Default","dataType":"int","mutability": "ReadOnly", "value": 30},
     {"ocppName": "FileTransferProtocols","componentName": "OCPPCommCtrlr","variableName":"FileTransferProtocols","variableInstance":None,"dataType":"MemberList","mutability": "ReadOnly", "value": set(("FTP","FTPS"))},
     {"ocppName": "HeartbeatInterval","componentName": "OCPPCommCtrlr","variableName":"HeartbeatInterval","variableInstance":None,"dataType":"int","mutability": "ReadWrite", "value": 60},
-    {"ocppName": "NetworkConfigurationPriority","componentName": "OCPPCommCtrlr","variableName":"NetworkConfigurationPriority","variableInstance":None,"dataType":"SequenceList","mutability": "ReadWrite", "value": set(("WWAN",))},
+    {"ocppName": "NetworkConfigurationPriority","componentName": "OCPPCommCtrlr","variableName":"NetworkConfigurationPriority","variableInstance":None,"dataType":"SequenceList","mutability": "ReadWrite", "value": set(("",))},
     {"ocppName": "NetworkProfileConnectionAttempts","componentName": "OCPPCommCtrlr","variableName":"NetworkProfileConnectionAttempts","variableInstance":None,"dataType":"int","mutability": "ReadWrite", "value": 10},
-    {"ocppName": "OfflineThreshold","componentName": "OCPPCommCtrlr","variableName":"OfflineThreshold","variableInstance":None,"dataType":"int","mutability": "ReadWrite", "value": 3600},
+    {"ocppName": "OfflineThreshold","componentName": "OCPPCommCtrlr","variableName":"OfflineThreshold","variableInstance":None,"dataType":"int","mutability": "ReadWrite", "value": 30},
     {"ocppName": "QueueAllMessages","componentName": "OCPPCommCtrlr","variableName":"QueueAllMessages","variableInstance":None,"dataType":"bool","mutability": "ReadWrite", "value": "False"},
     {"ocppName": "MessageAttemptsTransactionEvent","componentName": "OCPPCommCtrlr","variableName":"MessageAttempts","variableInstance":"TransactionEvent","dataType":"int","mutability": "ReadWrite", "value": 3},
     {"ocppName": "MessageAttemptIntervalTransactionEvent","componentName": "OCPPCommCtrlr","variableName":"MessageAttemptInterval","variableInstance":"TransactionEvent","dataType":"int","mutability": "ReadWrite", "value": 60},
@@ -54,7 +54,7 @@ defaultVariables = [
     {"ocppName": "Identity","componentName": "SecurityCtrlr","variableName":"Identity","variableInstance":None,"dataType":"identifierString","mutability": "ReadWrite", "value": ""}, #TODO create dataType
     {"ocppName": "OrganizationName","componentName": "SecurityCtrlr","variableName":"OrganizationName","variableInstance":None,"dataType":"str","mutability": "ReadWrite", "value": ""},
     {"ocppName": "CertificateEntries","componentName": "SecurityCtrlr","variableName":"CertificateEntries","variableInstance":None,"dataType":"int","mutability": "ReadOnly", "value": 5},
-    {"ocppName": "SecurityProfile","componentName": "SecurityCtrlr","variableName":"SecurityProfile","variableInstance":None,"dataType":"bool","mutability": "ReadOnly", "value": "False"},
+    {"ocppName": "SecurityProfile","componentName": "SecurityCtrlr","variableName":"SecurityProfile","variableInstance":None,"dataType":"int","mutability": "ReadOnly", "value": 0},
     {"ocppName": "AdditionalRootCertificateCheck","componentName": "SecurityCtrlr","variableName":"AdditionalRootCertificateCheck","variableInstance":None,"dataType":"bool","mutability": "ReadOnly", "value": "False"},
     {"ocppName": "MaxCertificateChainSize","componentName": "SecurityCtrlr","variableName":"MaxCertificateChainSize","variableInstance":None,"dataType":"int","mutability": "ReadOnly", "value": 10000},
     {"ocppName": "CertSigningWaitMinimum","componentName": "SecurityCtrlr","variableName":"CertSigningWaitMinimum","variableInstance":None,"dataType":"int","mutability": "ReadWrite", "value": 120},
@@ -168,7 +168,7 @@ defaultVariables = [
     ]
 
 async def createVariablesDb():
-    con = sqlite3.connect("variables.db")
+    con = sqlite3.connect("configuration.db")
     cur = con.cursor()
     try:
         cur.execute('''CREATE TABLE Variables
@@ -183,6 +183,35 @@ async def createVariablesDb():
             value              BLOB);''')
     except Exception as e:
         print(e)
+    try:
+        cur.execute('''CREATE TABLE Reservation
+            (
+            id                 INTEGER NOT NULL,
+            expiryDateTime     TEXT    NOT NULL,
+            idToken            TEXT    NOT NULL,
+            connectorType      TEXT,
+            evseId             TEXT,
+            groupIdToken       TEXT);''')
+    except Exception as e:
+        print(e)
+    try:
+        cur.execute('''CREATE TABLE NetworkConnectionProfile
+            (
+            ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            configurationSlot  INTEGER NOT NULL,
+            connectionData     TEXT    NOT NULL);''')
+    except Exception as e:
+        print(e)
+    con.commit()
+    con.close()
+
+    await putDefaultVaraiblesIntoTable()
+
+    
+
+async def putDefaultVaraiblesIntoTable():
+    con = sqlite3.connect("configuration.db")
+    cur = con.cursor()
 
     for ele in defaultVariables:
         value_arr = []
@@ -214,8 +243,9 @@ async def createVariablesDb():
     con.commit()
     con.close()
 
+
 async def getVariableFromDbById(id):
-    con = sqlite3.connect("variables.db")
+    con = sqlite3.connect("configuration.db")
     cur = con.cursor()    
     try:
         cur.execute('SELECT ocppName,dataType,value FROM Variables WHERE id = ?',(id,))
@@ -225,17 +255,23 @@ async def getVariableFromDbById(id):
         return None
 
 async def updateVariableInDb(key,value):
-    con = sqlite3.connect("variables.db")
+    con = sqlite3.connect("configuration.db")
     cur = con.cursor()    
     try:
-        cur.execute('UPDATE Variables SET value = ? WHERE ocppName = ?',(value,key))
+        print(value,type(value),isinstance(value,list))
+        if(isinstance(value,set) or isinstance(value,list)):
+            stringOfSet = ','.join(str(v) for v in value)
+            print(stringOfSet,key)
+            cur.execute('UPDATE Variables SET value = ? WHERE ocppName = ?',(stringOfSet,key))
+        else:
+            cur.execute('UPDATE Variables SET value = ? WHERE ocppName = ?',(value,key))
     except Exception as e:
         print(e)
     con.commit()
     con.close()
 
 async def selectVariableFromDb(variable):
-    con = sqlite3.connect("variables.db")
+    con = sqlite3.connect("configuration.db")
     cur = con.cursor()  
     try:
         if(variable["variableInstance"] == None):
@@ -246,4 +282,30 @@ async def selectVariableFromDb(variable):
         return row
     except Exception as e:
         print(e)
-    
+
+async def putNetworkProfileIntoDb(slot,data):
+    con = sqlite3.connect("configuration.db")
+    cur = con.cursor()
+    try:
+        cur.execute('SELECT * FROM NetworkConnectionProfile WHERE configurationSlot = ?',(slot,))
+        entry = cur.fetchone()
+        if entry is None:
+            print("inserttttttttttttttttttttttt")
+            cur.execute("INSERT INTO NetworkConnectionProfile(configurationSlot,connectionData) VALUES(?,?)", (slot,data))
+        else:
+            print("updateeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+            cur.execute("UPDATE NetworkConnectionProfile SET connectionData = ? WHERE configurationSlot = ?", (data,slot))
+    except Exception as e:
+        print(e)
+    con.commit()
+    con.close()
+
+async def getNetworkProfileFromDb(slot):
+    con = sqlite3.connect("configuration.db")
+    cur = con.cursor()
+    try:
+        cur.execute('SELECT connectionData FROM NetworkConnectionProfile WHERE configurationSlot = ?',(slot,))
+        entry = cur.fetchone()
+    except:
+        pass
+    return entry
