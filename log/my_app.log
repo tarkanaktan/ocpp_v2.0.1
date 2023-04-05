@@ -1,4 +1,35 @@
-[2023-03-21 12:49:25,380] INFO in chargepoint: CP_1: send [3,"885da9cf-86bd-4a24-b8a4-de990a818226",{"setVariableResult":[{"attributeStatus":"Accepted","component":{"name":"OCPPCommCtrlr"},"variable":{"name":"HeartbeatInterval"}},{"attributeStatus":"Accepted","component":{"name":"ReservationCtrlr"},"variable":{"name":"Enabled"}}]}]
-[2023-03-21 12:49:25,381] INFO in chargepoint: CP_1: send [2,"f37c88ae-5e4f-4532-8d7b-527247b0aa06","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
-[2023-03-21 12:49:25,387] INFO in myChargePoint: Connected to central system.
-[2023-03-21 12:49:25,388] INFO in chargepoint: CP_1: send [2,"fb5346f3-fe48-4fb0-874e-ee1f2b802050","Heartbeat",{}]
+[2023-04-05 08:00:55,298] INFO in chargepoint: CP_1: send [3,"885da9cf-86bd-4a24-b8a4-de990a818226",{"setVariableResult":[{"attributeStatus":"Accepted","component":{"name":"OCPPCommCtrlr"},"variable":{"name":"HeartbeatInterval"}},{"attributeStatus":"Accepted","component":{"name":"ReservationCtrlr"},"variable":{"name":"Enabled"}}]}]
+[2023-04-05 08:00:55,299] INFO in chargepoint: CP_1: send [2,"da61e0bd-e136-4fe7-826c-e7250240ed4a","BootNotification",{"chargingStation":{"model":"Wallbox XYZ","vendorName":"anewone"},"reason":"PowerUp"}]
+[2023-04-05 08:00:55,308] INFO in chargepoint: CP_1: receive message [3,"da61e0bd-e136-4fe7-826c-e7250240ed4a",{"currentTime":"2023-04-05T06:00:55.306772","interval":10,"status":"Accepted"}]
+[2023-04-05 08:00:55,310] INFO in myChargePoint: Connected to central system.
+[2023-04-05 08:00:55,310] INFO in chargepoint: CP_1: send [2,"d2889d05-6e1a-42cd-8d8f-1250ce4bcbd0","Heartbeat",{}]
+[2023-04-05 08:00:55,312] INFO in chargepoint: CP_1: receive message [3,"d2889d05-6e1a-42cd-8d8f-1250ce4bcbd0",{"currentTime":"2023-04-05T06:00:55Z"}]
+[2023-04-05 08:00:56,286] INFO in chargepoint: CP_1: send [2,"d027cc45-e210-4cc8-ae27-80dad6d9b6b0","StatusNotification",{"timestamp":"2023-04-05T06:00:56.286085","connectorStatus":"Available","evseId":0,"connectorId":0}]
+[2023-04-05 08:00:56,289] INFO in chargepoint: CP_1: receive message [3,"d027cc45-e210-4cc8-ae27-80dad6d9b6b0",{}]
+[2023-04-05 08:00:56,290] ERROR in chargepoint: Couldn't get handlers with action
+[2023-04-05 08:00:56,290] ERROR in chargepoint: Couldn't get handler onresponse
+[2023-04-05 08:00:56,290] INFO in chargepoint: CP_1: send [2,"e570fea5-aa82-4974-9cf8-e940dd7cdeda","StatusNotification",{"timestamp":"2023-04-05T06:00:56.290128","connectorStatus":"Available","evseId":1,"connectorId":1}]
+[2023-04-05 08:00:56,290] INFO in chargepoint: CP_1: receive message [3,"e570fea5-aa82-4974-9cf8-e940dd7cdeda",{}]
+[2023-04-05 08:00:56,291] ERROR in chargepoint: Couldn't get handlers with action
+[2023-04-05 08:00:56,291] ERROR in chargepoint: Couldn't get handler onresponse
+[2023-04-05 08:00:56,291] INFO in chargepoint: CP_1: send [2,"be19ea21-64cc-47dc-be42-52c772eb85f3","StatusNotification",{"timestamp":"2023-04-05T06:00:56.291098","connectorStatus":"Available","evseId":2,"connectorId":2}]
+[2023-04-05 08:00:56,291] INFO in chargepoint: CP_1: receive message [3,"be19ea21-64cc-47dc-be42-52c772eb85f3",{}]
+[2023-04-05 08:00:56,291] ERROR in chargepoint: Couldn't get handlers with action
+[2023-04-05 08:00:56,291] ERROR in chargepoint: Couldn't get handler onresponse
+[2023-04-05 08:00:57,317] INFO in chargepoint: CP_1: send [3,"cda5d782-dfe2-4f44-a946-405bc76dab72",{"status":"Accepted"}]
+[2023-04-05 08:00:58,298] INFO in chargepoint: CP_1: send [2,"2db1ff41-1e44-4437-8aca-1229ca5dc13e","StatusNotification",{"timestamp":"2023-04-05T06:00:58.298672","connectorStatus":"Reserved","evseId":1,"connectorId":1}]
+[2023-04-05 08:00:58,300] INFO in chargepoint: CP_1: receive message [3,"2db1ff41-1e44-4437-8aca-1229ca5dc13e",{}]
+[2023-04-05 08:00:58,300] ERROR in chargepoint: Couldn't get handlers with action
+[2023-04-05 08:00:58,300] ERROR in chargepoint: Couldn't get handler onresponse
+[2023-04-05 08:00:58,310] INFO in chargepoint: CP_1: send [2,"6acb3328-d3c8-443d-b3d0-28d4c65dc6c5","ReservationStatusUpdate",{"reservationId":1,"reservationUpdateStatus":"Expired"}]
+[2023-04-05 08:00:58,311] INFO in chargepoint: CP_1: receive message [4,"6acb3328-d3c8-443d-b3d0-28d4c65dc6c5","NotSupported","Request Action is recognized but not supported by the receiver",{"cause":"No handler for ReservationStatusUpdate registered."}]
+[2023-04-05 08:00:58,317] INFO in chargepoint: CP_1: send [3,"asd5d782-dfe2-4f44-a946-405bc76dab72",{"status":"Accepted"}]
+[2023-04-05 08:00:59,313] INFO in chargepoint: CP_1: send [2,"9c30282e-ca9d-47b7-8387-9f8b80e3bc84","ReservationStatusUpdate",{"reservationId":2,"reservationUpdateStatus":"Expired"}]
+[2023-04-05 08:00:59,314] INFO in chargepoint: CP_1: receive message [4,"9c30282e-ca9d-47b7-8387-9f8b80e3bc84","NotSupported","Request Action is recognized but not supported by the receiver",{"cause":"No handler for ReservationStatusUpdate registered."}]
+[2023-04-05 08:00:59,319] INFO in chargepoint: CP_1: send [3,"asd12345-dfe2-4f44-a946-405bc76dab72",{"status":"Accepted"}]
+[2023-04-05 08:01:00,317] INFO in chargepoint: CP_1: send [2,"42858677-a4a0-44bd-be1e-139967515b45","ReservationStatusUpdate",{"reservationId":3,"reservationUpdateStatus":"Expired"}]
+[2023-04-05 08:01:00,319] INFO in chargepoint: CP_1: receive message [4,"42858677-a4a0-44bd-be1e-139967515b45","NotSupported","Request Action is recognized but not supported by the receiver",{"cause":"No handler for ReservationStatusUpdate registered."}]
+[2023-04-05 08:01:01,321] INFO in chargepoint: CP_1: send [2,"d8c3ff1f-4204-4cc8-91e1-09c509adccb6","StatusNotification",{"timestamp":"2023-04-05T06:01:01.321498","connectorStatus":"Available","evseId":1,"connectorId":1}]
+[2023-04-05 08:01:01,323] INFO in chargepoint: CP_1: receive message [3,"d8c3ff1f-4204-4cc8-91e1-09c509adccb6",{}]
+[2023-04-05 08:01:01,323] ERROR in chargepoint: Couldn't get handlers with action
+[2023-04-05 08:01:01,323] ERROR in chargepoint: Couldn't get handler onresponse

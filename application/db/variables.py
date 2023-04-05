@@ -143,5 +143,8 @@ class Variables():
 
     async def getNetworkProfile(self,slot):
         entry = await dbhandler.getNetworkProfileFromDb(slot)
-        msg = entry[0].replace("\'", "\"")
+        try:
+            msg = entry[0].replace("\'", "\"")
+        except:
+            msg = None
         return msg

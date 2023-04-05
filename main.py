@@ -23,8 +23,10 @@ async def main():
     connectionDataFromDb = await variables.getNetworkProfile(variables.NetworkConfigurationPriority[0])
     if connectionDataFromDb is not None:
         connectionData_json = json.loads(connectionDataFromDb)
-    print(connectionData_json["ocppCsmsUrl"])
-    uri = connectionData_json["ocppCsmsUrl"]
+        print(connectionData_json["ocppCsmsUrl"])
+        uri = connectionData_json["ocppCsmsUrl"]
+    else:
+        uri = '''ws://localhost:7000/CP1'''
     #await variables.putNetworkProfile(configurationSlot,str(asdict(connectionData)))
     #await variables.setVariable("NetworkConfigurationPriority",uriList,"SequenceList")
     while(True):
